@@ -1,0 +1,9 @@
+---
+Name: googleshoppingfeed
+Before: 'mysite/*'
+After: 'framework/*','cms/*','ecommerce/*'
+---
+
+Product:
+  extensions:
+    - GoogleShoppingFeedExtension
