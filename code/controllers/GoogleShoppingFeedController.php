@@ -51,9 +51,10 @@ class GoogleShoppingFeedController extends Controller
     {
         $output = new ArrayList();
 
-        $products = Product::get()->filter(['HideFromShoppingFeed' => false]);
+        $products = Product::get()->filter(['HideFromShoppingFeed' => false])->limit();
 
         foreach ($products as $product) {
+            $product->XMLSummary = htmlspecialchars($product->dbObject('Content')->Summary(50));
             $output->push($product);
         }
 
