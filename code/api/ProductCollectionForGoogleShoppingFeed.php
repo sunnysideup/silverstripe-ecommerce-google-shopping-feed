@@ -8,16 +8,16 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
 
         $products = parent::getArray();
 
-        foreach($products as $id => $className) {
+        foreach ($products as $id => $className) {
             $productArray = [];
-            if(method_exists($className, 'get_data_for_google_shopping_feed')) {
+            if (method_exists($className, 'get_data_for_google_shopping_feed')) {
                 $productArray = $className::get_data_for_google_shopping_feed($id);
             }
 
-            if(!empty($productArray)){
+            if (! empty($productArray)) {
                 $arrayList->push(
                     ArrayData::create(
-                        $productArray    
+                        $productArray
                     )
                 );
             }

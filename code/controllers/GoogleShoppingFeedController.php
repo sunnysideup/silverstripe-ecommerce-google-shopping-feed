@@ -11,24 +11,23 @@
  */
 class GoogleShoppingFeedController extends Controller
 {
-
     /**
      * @var array
      */
-    private static $allowed_actions = array(
-        'index'
-    );
-    
+    private static $allowed_actions = [
+        'index',
+    ];
+
     /**
-     * Specific controller action for displaying a particular list of links 
+     * Specific controller action for displaying a particular list of links
      * for a class
-     * 
+     *
      * @return mixed
      */
     public function index()
     {
         Config::inst()->update('SSViewer', 'set_source_file_comments', false);
-        
+
         $this->getResponse()->addHeader(
             'Content-Type',
             'application/xml; charset="utf-8"'
@@ -41,10 +40,9 @@ class GoogleShoppingFeedController extends Controller
         $currency = EcommerceCurrency::default_currency_code();
 
         return [
-            "SiteConfig" => SiteConfig::current_site_config(),
+            'SiteConfig' => SiteConfig::current_site_config(),
             'Items' => ProductCollectionForGoogleShoppingFeed::getArrayList(),
-            "Currency" => $currency
+            'Currency' => $currency,
         ];
-    }  
-
+    }
 }

@@ -2,34 +2,33 @@
 
 class GoogleShoppingFeedExtension extends DataExtension
 {
-    
     /**
      * @var array
      */
     private static $db = [
-        "HideFromShoppingFeed" => "Boolean",
-        "MPN" =>  "Varchar(255)",
+        'HideFromShoppingFeed' => 'Boolean',
+        'MPN' => 'Varchar(255)',
     ];
 
     private static $has_one = [
-        "GoogleProductCategory" => "GoogleProductCategory"
+        'GoogleProductCategory' => 'GoogleProductCategory',
     ];
 
     /**
-     * Add the fields to "CMSFields" (if we are not using settings fields). 
-     * 
-     * @param FieldList
+     * Add the fields to "CMSFields" (if we are not using settings fields).
+     *
+     * @param FieldList $fields
      */
     public function updateCMSFields(FieldList $fields)
     {
         $fields->addFieldsToTab(
             'Root.GoogleShoppingFeed',
             [
-                CheckboxField::create("HideFromShoppingFeed"),
-                TextField::create("MPN"),
+                CheckboxField::create('HideFromShoppingFeed'),
+                TextField::create('MPN'),
                 AutoCompleteField::create(
                     'GoogleProductCategoryID',
-                    $this->owner->fieldLabel("GoogleProductCategory"),
+                    $this->owner->fieldLabel('GoogleProductCategory'),
                     '',
                     null,
                     null,
