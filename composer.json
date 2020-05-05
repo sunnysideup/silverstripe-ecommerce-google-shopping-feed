@@ -1,0 +1,31 @@
+{
+    "name": "sunnysideup/ecommerce-google-shopping-feed",
+    "type": "silverstripe-module",
+    "description": "add google shopping feed to your e-commerce install",
+    "keywords": [
+        "Silverstripe-CMS",
+        "CMS",
+        "Silverstripe",
+        "ecommerce",
+        "e-commerce",
+        "google",
+        "shopping feed",
+        "xml",
+        "shop",
+        "feed"
+    ],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Shane Watters",
+            "email": "shane@sunnysideup.co.nz",
+            "role": "lead developer"
+        }
+    ],
+    "require": {
+        "silverstripe/ecommerce": "dev-master"
+    },
+    "extra": {
+        "installer-name": "ecommerce-google-shopping-feed"
+    }
+}
