@@ -18,6 +18,8 @@ class GoogleShoppingFeedController extends Controller
         'index',
     ];
 
+    private static $api_class = ProductCollectionForGoogleShoppingFeed::class;
+
     /**
      * Specific controller action for displaying a particular list of links
      * for a class
@@ -39,9 +41,11 @@ class GoogleShoppingFeedController extends Controller
 
         $currency = EcommerceCurrency::default_currency_code();
 
+        $apiClass = Config::inst()->get(GoogleShoppingFeedController::class, 'api_class');
+
         return [
             'SiteConfig' => SiteConfig::current_site_config(),
-            'Items' => ProductCollectionForGoogleShoppingFeed::getArrayList(),
+            'Items' => $apiClass::getArrayList(),
             'Currency' => $currency,
         ];
     }
