@@ -14,15 +14,15 @@
             <g:id><% if $InternalItemID %>$InternalItemID<% else %>$ID<% end_if %></g:id>
             <link>$AbsoluteLink</link>
             <g:link>$AbsoluteLink</g:link>
-            <% if $Image.exists %><g:image_link>{$Image.AbsoluteLink}</g:image_link><% end_if %>
+            <% if $ImageLink %><g:image_link>{$ImageLink}</g:image_link><% end_if %>
             <g:price>$Price(2) $Top.Currency</g:price>
-            <g:condition>New</g:condition>
-            <g:availability><% if $IsAvailable %>in-stock<% else %>out of stock<% end_if %></g:availability>
-            <g:brand>$Brand.Title</g:brand>
+            <g:condition>$Condition</g:condition>
+            <g:availability>$Availability</g:availability>
+            <g:brand>$Brand</g:brand>
             <% if $MPN %><g:mpn>$MPN</g:mpn><% end_if %>
-            <% if $GoogleProductCategory.exists %><g:google_product_category>$GoogleProductCategory.GoogleID
+            <% if $GoogleProductCategoryID %><g:google_product_category>$GoogleProductCategoryID
             </g:google_product_category><% end_if %>
-            <g:custom_label_1>$Parent.Title</g:custom_label_1>
+            <g:custom_label_1>$ParentTitle</g:custom_label_1>
         </item>
         <% end_loop %>
 

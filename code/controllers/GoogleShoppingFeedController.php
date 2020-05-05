@@ -42,23 +42,9 @@ class GoogleShoppingFeedController extends Controller
 
         return [
             "SiteConfig" => SiteConfig::current_site_config(),
-            'Items' => $this->getItems(),
+            'Items' => ProductCollectionForGoogleShoppingFeed::getArrayList(),
             "Currency" => $currency
         ];
-    }
-
-    public function getItems()
-    {
-        $output = new ArrayList();
-
-        $products = Product::get()->filter(['HideFromShoppingFeed' => false])->limit();
-
-        foreach ($products as $product) {
-            $product->XMLSummary = htmlspecialchars($product->dbObject('Content')->Summary(50));
-            $output->push($product);
-        }
-
-        return $output;
-    }   
+    }  
 
 }
