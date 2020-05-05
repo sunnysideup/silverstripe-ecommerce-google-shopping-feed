@@ -2,11 +2,11 @@
 
 class ProductCollectionForGoogleShoppingFeed extends ProductCollection
 {
-    public static function getArrayList()
+    public function getArrayList() : ArrayList
     {
         $arrayList = new ArrayList();
 
-        $products = parent::getArray();
+        $products = parent::getArrayBasic();
 
         foreach ($products as $id => $className) {
             $productArray = [];
@@ -24,5 +24,10 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
         }
 
         return $arrayList;
+    }
+
+    public function getArrayFull() : array
+    {
+        return [];
     }
 }

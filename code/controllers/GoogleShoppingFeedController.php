@@ -42,10 +42,11 @@ class GoogleShoppingFeedController extends Controller
         $currency = EcommerceCurrency::default_currency_code();
 
         $apiClass = Config::inst()->get(GoogleShoppingFeedController::class, 'api_class');
+        $apiClass = new $apiClass();
 
         return [
             'SiteConfig' => SiteConfig::current_site_config(),
-            'Items' => $apiClass::getArrayList(),
+            'Items' => $apiClass->getArrayList(),
             'Currency' => $currency,
         ];
     }
