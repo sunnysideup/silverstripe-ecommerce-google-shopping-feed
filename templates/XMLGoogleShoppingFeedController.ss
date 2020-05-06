@@ -9,8 +9,8 @@
         <item>
             <title>$Title</title>
             <g:title>$Title</g:title>
-            <description>$XMLSummary</description>
-            <g:description>$XMLSummary</g:description>
+            <description>$Description</description>
+            <g:description>$Description</g:description>
             <g:id><% if $InternalItemID %>$InternalItemID<% else %>$ID<% end_if %></g:id>
             <link>$AbsoluteLink</link>
             <g:link>$AbsoluteLink</g:link>
@@ -20,7 +20,7 @@
             <g:availability>$Availability</g:availability>
             <g:brand>$Brand</g:brand>
             <% if $MPN %><g:mpn>$MPN</g:mpn><% end_if %>
-            <% if $GoogleProductCategoryID %><g:google_product_category>$GoogleProductCategoryID
+            <% if $GoogleProductCategory %><g:google_product_category>$GoogleProductCategory
             </g:google_product_category><% end_if %>
             <g:custom_label_1>$ParentTitle</g:custom_label_1>
         </item>

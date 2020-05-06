@@ -3,4 +3,5 @@ Name: googleshoppingfeedroutes
 ---
 Director:
   rules:
-    'shoppingfeed.xml': 'GoogleShoppingFeedController'
+    'shoppingfeed.xml': 'XMLGoogleShoppingFeedController'
+    'shoppingfeed.txt': 'TSVGoogleShoppingFeedController'
