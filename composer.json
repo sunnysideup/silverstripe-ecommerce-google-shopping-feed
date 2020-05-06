@@ -23,7 +23,8 @@
         }
     ],
     "require": {
-        "silverstripe/ecommerce": "dev-master"
+        "silverstripe/ecommerce": "dev-master",
+        "tractorcow/silverstripe-autocomplete": "~3.5"
     },
     "extra": {
         "installer-name": "ecommerce-google-shopping-feed"
