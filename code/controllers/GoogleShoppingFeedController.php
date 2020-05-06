@@ -28,6 +28,5 @@ class GoogleShoppingFeedController extends Controller
      */
     public function index()
     {
-        
     }
 }

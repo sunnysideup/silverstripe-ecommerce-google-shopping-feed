@@ -6,7 +6,6 @@
  * <code>
  * http://site.com/shoppingfeed.xml
  * </code>
- *
  */
 class XMLGoogleShoppingFeedController extends GoogleShoppingFeedController
 {
@@ -16,7 +15,6 @@ class XMLGoogleShoppingFeedController extends GoogleShoppingFeedController
     private static $allowed_actions = [
         'index',
     ];
-
 
     /**
      * Specific controller action for displaying a particular list of links
