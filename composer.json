@@ -23,7 +23,7 @@
         }
     ],
     "require": {
-        "sunnysideup/ecommerce": "~11.0",
+        "sunnysideup/ecommerce": ">=11.0",
         "tractorcow/silverstripe-autocomplete": "~3.5"
     },
     "extra": {
