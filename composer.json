@@ -1,6 +1,6 @@
 {
     "name": "sunnysideup/ecommerce-google-shopping-feed",
-    "type": "silverstripe-module",
+    "type": "silverstripe-vendormodule",
     "description": "add google shopping feed to your e-commerce install",
     "keywords": [
         "Silverstripe-CMS",
