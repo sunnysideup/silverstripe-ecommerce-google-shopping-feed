@@ -1,5 +1,10 @@
 <?php
 
+namespace Sunnysideup\EcommerceGoogleShoppingFeed\Controllers;
+
+use Config;
+
+
 /**
  * Controller for displaying the xml feed.
  *

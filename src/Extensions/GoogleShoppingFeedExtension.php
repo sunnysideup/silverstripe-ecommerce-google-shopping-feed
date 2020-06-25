@@ -1,5 +1,14 @@
 <?php
 
+namespace Sunnysideup\EcommerceGoogleShoppingFeed\Extensions;
+
+use DataExtension;
+use FieldList;
+use CheckboxField;
+use TextField;
+use AutoCompleteField;
+
+
 
 /**
   * ### @@@@ START REPLACEMENT @@@@ ###

@@ -1,5 +1,12 @@
 <?php
 
+namespace Sunnysideup\EcommerceGoogleShoppingFeed\Controllers;
+
+use Config;
+use EcommerceCurrency;
+use SiteConfig;
+
+
 /**
  * Controller for displaying the xml feed.
  *

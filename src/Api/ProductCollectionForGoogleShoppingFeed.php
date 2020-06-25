@@ -1,5 +1,12 @@
 <?php
 
+namespace Sunnysideup\EcommerceGoogleShoppingFeed\Api;
+
+use ProductCollection;
+use ArrayList;
+use ArrayData;
+
+
 class ProductCollectionForGoogleShoppingFeed extends ProductCollection
 {
     public function getArrayList(): ArrayList

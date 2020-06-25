@@ -1,5 +1,11 @@
 <?php
 
+namespace Sunnysideup\EcommerceGoogleShoppingFeed\Model;
+
+use DataObject;
+use DB;
+
+
 class GoogleProductCategory extends DataObject
 {
 
