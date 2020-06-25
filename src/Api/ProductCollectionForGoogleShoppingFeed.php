@@ -1,5 +1,16 @@
 <?php
 
+namespace Sunnysideup\EcommerceGoogleShoppingFeed\Api;
+
+
+
+
+use SilverStripe\ORM\ArrayList;
+use SilverStripe\View\ArrayData;
+use Sunnysideup\Ecommerce\Api\ProductCollection;
+
+
+
 class ProductCollectionForGoogleShoppingFeed extends ProductCollection
 {
     public function getArrayList(): ArrayList
@@ -8,9 +19,36 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
 
         $products = parent::getArrayBasic();
 
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: $className (case sensitive)
+  * NEW: $className (COMPLEX)
+  * EXP: Check if the class name can still be used as such
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
         foreach ($products as $id => $className) {
             $productArray = [];
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: $className (case sensitive)
+  * NEW: $className (COMPLEX)
+  * EXP: Check if the class name can still be used as such
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
             if (method_exists($className, 'get_data_for_google_shopping_feed')) {
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: $className (case sensitive)
+  * NEW: $className (COMPLEX)
+  * EXP: Check if the class name can still be used as such
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
                 $productArray = $className::get_data_for_google_shopping_feed($id);
             }
 
@@ -46,9 +84,36 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
 
         $products = parent::getArrayBasic();
 
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: $className (case sensitive)
+  * NEW: $className (COMPLEX)
+  * EXP: Check if the class name can still be used as such
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
         foreach ($products as $id => $className) {
             $productArray = [];
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: $className (case sensitive)
+  * NEW: $className (COMPLEX)
+  * EXP: Check if the class name can still be used as such
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
             if (method_exists($className, 'get_data_for_google_shopping_feed')) {
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: $className (case sensitive)
+  * NEW: $className (COMPLEX)
+  * EXP: Check if the class name can still be used as such
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
                 $productArray = $className::get_data_for_google_shopping_feed($id);
             }
 
@@ -65,3 +130,4 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
         return [];
     }
 }
+

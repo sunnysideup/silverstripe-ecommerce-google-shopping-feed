@@ -1,5 +1,14 @@
 <?php
 
+namespace Sunnysideup\EcommerceGoogleShoppingFeed\Controllers;
+
+
+use SilverStripe\Core\Config\Config;
+use SilverStripe\View\SSViewer;
+use SilverStripe\Control\ContentNegotiator;
+
+
+
 /**
  * Controller for displaying the xml feed.
  *
@@ -7,6 +16,15 @@
  * http://site.com/shoppingfeed.txt
  * </code>
  */
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: SVG (case sensitive)
+  * NEW: SVG (COMPLEX)
+  * EXP: SVG uploads are now disabled in SS3.7: https://github.com/silverstripe/silverstripe-installer/commit/c25478bef75cc5482852e80a1fa6f1f0e6460e39, if you need to allow SVG uploads you need to update your configuration
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
 class TSVGoogleShoppingFeedController extends GoogleShoppingFeedController
 {
     /**
@@ -18,9 +36,9 @@ class TSVGoogleShoppingFeedController extends GoogleShoppingFeedController
 
     public function index()
     {
-        SSViewer::set_source_file_comments(false);
+        Config::modify()->update(SSViewer::class, 'source_file_comments', false);
         // We need to override the default content-type
-        Config::inst()->update('ContentNegotiator', 'enabled', false);
+        Config::modify()->update(ContentNegotiator::class, 'enabled', false);
         $filename = 'shoppingfeed';
         $this->getResponse()->addHeader('Content-Type', 'text/tab-separated-values; charset="utf-8"');
         $this->getResponse()->addHeader('Content-Disposition', 'attachment; filename=' . $filename . '.txt');
@@ -65,3 +83,4 @@ class TSVGoogleShoppingFeedController extends GoogleShoppingFeedController
         return $string;
     }
 }
+

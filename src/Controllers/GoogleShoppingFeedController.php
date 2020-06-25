@@ -1,5 +1,14 @@
 <?php
 
+namespace Sunnysideup\EcommerceGoogleShoppingFeed\Controllers;
+
+
+
+use Sunnysideup\EcommerceGoogleShoppingFeed\Api\ProductCollectionForGoogleShoppingFeed;
+use SilverStripe\Control\Controller;
+
+
+
 /**
  * Controller for displaying the xml feed.
  *
@@ -30,3 +39,4 @@ class GoogleShoppingFeedController extends Controller
     {
     }
 }
+
