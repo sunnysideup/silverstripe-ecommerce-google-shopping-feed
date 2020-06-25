@@ -27,7 +27,5 @@
         "tractorcow/silverstripe-autocomplete": "~3.5",
         "silverstripe/recipe-cms": "^4.4"
     },
-    "extra": {
-        "installer-name": "ecommerce-google-shopping-feed"
-    }
+    "extra": []
 }
