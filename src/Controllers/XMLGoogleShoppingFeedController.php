@@ -2,9 +2,14 @@
 
 namespace Sunnysideup\EcommerceGoogleShoppingFeed\Controllers;
 
-use Config;
-use EcommerceCurrency;
-use SiteConfig;
+
+
+
+use SilverStripe\Core\Config\Config;
+use SilverStripe\View\SSViewer;
+use Sunnysideup\Ecommerce\Model\Money\EcommerceCurrency;
+use SilverStripe\SiteConfig\SiteConfig;
+
 
 
 /**
@@ -31,7 +36,7 @@ class XMLGoogleShoppingFeedController extends GoogleShoppingFeedController
      */
     public function index()
     {
-        Config::modify()->update('SSViewer', 'set_source_file_comments', false);
+        Config::modify()->update(SSViewer::class, 'set_source_file_comments', false);
 
         $this->getResponse()->addHeader(
             'Content-Type',

@@ -2,8 +2,11 @@
 
 namespace Sunnysideup\EcommerceGoogleShoppingFeed\Controllers;
 
-use Controller;
-use ProductCollectionForGoogleShoppingFeed;
+
+
+use Sunnysideup\EcommerceGoogleShoppingFeed\Api\ProductCollectionForGoogleShoppingFeed;
+use SilverStripe\Control\Controller;
+
 
 
 /**

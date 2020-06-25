@@ -2,9 +2,13 @@
 
 namespace Sunnysideup\EcommerceGoogleShoppingFeed\Api;
 
-use ProductCollection;
-use ArrayList;
-use ArrayData;
+
+
+
+use SilverStripe\ORM\ArrayList;
+use SilverStripe\View\ArrayData;
+use Sunnysideup\Ecommerce\Api\ProductCollection;
+
 
 
 class ProductCollectionForGoogleShoppingFeed extends ProductCollection

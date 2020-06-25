@@ -2,8 +2,11 @@
 
 namespace Sunnysideup\EcommerceGoogleShoppingFeed\Model;
 
-use DataObject;
-use DB;
+
+
+use SilverStripe\ORM\DB;
+use SilverStripe\ORM\DataObject;
+
 
 
 class GoogleProductCategory extends DataObject

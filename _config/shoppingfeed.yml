@@ -3,7 +3,6 @@ Name: googleshoppingfeed
 Before: 'app/*'
 After: ['#coreconfig', '#cmsextensions', '#ecommerce']
 ---
-
-Product:
+Sunnysideup\Ecommerce\Pages\Product:
   extensions:
-    - GoogleShoppingFeedExtension
+    - Sunnysideup\EcommerceGoogleShoppingFeed\Extensions\GoogleShoppingFeedExtension

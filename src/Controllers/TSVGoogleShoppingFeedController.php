@@ -2,7 +2,11 @@
 
 namespace Sunnysideup\EcommerceGoogleShoppingFeed\Controllers;
 
-use Config;
+
+use SilverStripe\Core\Config\Config;
+use SilverStripe\View\SSViewer;
+use SilverStripe\Control\ContentNegotiator;
+
 
 
 /**
@@ -32,9 +36,9 @@ class TSVGoogleShoppingFeedController extends GoogleShoppingFeedController
 
     public function index()
     {
-        Config::modify()->update('SSViewer', 'source_file_comments', false);
+        Config::modify()->update(SSViewer::class, 'source_file_comments', false);
         // We need to override the default content-type
-        Config::modify()->update('ContentNegotiator', 'enabled', false);
+        Config::modify()->update(ContentNegotiator::class, 'enabled', false);
         $filename = 'shoppingfeed';
         $this->getResponse()->addHeader('Content-Type', 'text/tab-separated-values; charset="utf-8"');
         $this->getResponse()->addHeader('Content-Disposition', 'attachment; filename=' . $filename . '.txt');
