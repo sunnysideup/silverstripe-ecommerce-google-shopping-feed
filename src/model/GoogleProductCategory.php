@@ -76,7 +76,7 @@ class GoogleProductCategory extends DataObject
         return $result;
     }
 
-    public function canDelete($member = null)
+    public function canDelete($member = null, $context = [])
     {
         return false;
     }

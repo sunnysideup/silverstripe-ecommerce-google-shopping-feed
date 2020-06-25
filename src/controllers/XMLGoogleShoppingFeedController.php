@@ -24,7 +24,7 @@ class XMLGoogleShoppingFeedController extends GoogleShoppingFeedController
      */
     public function index()
     {
-        Config::inst()->update('SSViewer', 'set_source_file_comments', false);
+        Config::modify()->update('SSViewer', 'set_source_file_comments', false);
 
         $this->getResponse()->addHeader(
             'Content-Type',
