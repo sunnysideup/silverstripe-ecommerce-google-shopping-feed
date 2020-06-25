@@ -65,3 +65,4 @@ class TSVGoogleShoppingFeedController extends GoogleShoppingFeedController
         return $string;
     }
 }
+

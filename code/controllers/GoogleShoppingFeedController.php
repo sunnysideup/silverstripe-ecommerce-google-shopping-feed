@@ -30,3 +30,4 @@ class GoogleShoppingFeedController extends Controller
     {
     }
 }
+

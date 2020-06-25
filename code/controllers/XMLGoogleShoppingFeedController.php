@@ -47,3 +47,4 @@ class XMLGoogleShoppingFeedController extends GoogleShoppingFeedController
         ];
     }
 }
+

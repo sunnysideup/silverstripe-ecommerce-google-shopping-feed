@@ -39,3 +39,4 @@ class GoogleShoppingFeedExtension extends DataExtension
         );
     }
 }
+

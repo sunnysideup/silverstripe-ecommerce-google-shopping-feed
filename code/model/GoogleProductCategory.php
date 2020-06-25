@@ -67,3 +67,4 @@ class GoogleProductCategory extends DataObject
         return false;
     }
 }
+
