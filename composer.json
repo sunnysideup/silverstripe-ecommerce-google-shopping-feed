@@ -24,7 +24,7 @@
     ],
     "require": {
         "sunnysideup/ecommerce": ">=11.0",
-        "tractorcow/silverstripe-autocomplete": "~3.5",
+        "tractorcow/silverstripe-autocomplete": "^4.0",
         "silverstripe/recipe-cms": "^4.4"
     },
     "extra": [],
