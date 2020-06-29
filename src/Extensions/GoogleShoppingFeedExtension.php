@@ -2,29 +2,13 @@
 
 namespace Sunnysideup\EcommerceGoogleShoppingFeed\Extensions;
 
-
-
-
-
-
-use Sunnysideup\EcommerceGoogleShoppingFeed\Model\GoogleProductCategory;
-use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\CheckboxField;
+use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\TextField;
-use TractorCow\AutoComplete\AutoCompleteField;
 use SilverStripe\ORM\DataExtension;
+use Sunnysideup\EcommerceGoogleShoppingFeed\Model\GoogleProductCategory;
+use TractorCow\AutoComplete\AutoCompleteField;
 
-
-
-
-/**
-  * ### @@@@ START REPLACEMENT @@@@ ###
-  * WHY: automated upgrade
-  * OLD:  extends DataExtension (ignore case)
-  * NEW:  extends DataExtension (COMPLEX)
-  * EXP: Check for use of $this->anyVar and replace with $this->anyVar[$this->owner->ID] or consider turning the class into a trait
-  * ### @@@@ STOP REPLACEMENT @@@@ ###
-  */
 class GoogleShoppingFeedExtension extends DataExtension
 {
     /**
@@ -64,4 +48,3 @@ class GoogleShoppingFeedExtension extends DataExtension
         );
     }
 }
-

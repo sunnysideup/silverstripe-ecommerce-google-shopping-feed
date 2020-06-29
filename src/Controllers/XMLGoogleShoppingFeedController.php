@@ -2,15 +2,10 @@
 
 namespace Sunnysideup\EcommerceGoogleShoppingFeed\Controllers;
 
-
-
-
 use SilverStripe\Core\Config\Config;
+use SilverStripe\SiteConfig\SiteConfig;
 use SilverStripe\View\SSViewer;
 use Sunnysideup\Ecommerce\Model\Money\EcommerceCurrency;
-use SilverStripe\SiteConfig\SiteConfig;
-
-
 
 /**
  * Controller for displaying the xml feed.
@@ -59,4 +54,3 @@ class XMLGoogleShoppingFeedController extends GoogleShoppingFeedController
         ];
     }
 }
-

@@ -2,12 +2,9 @@
 
 namespace Sunnysideup\EcommerceGoogleShoppingFeed\Controllers;
 
-
+use SilverStripe\Control\ContentNegotiator;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\View\SSViewer;
-use SilverStripe\Control\ContentNegotiator;
-
-
 
 /**
  * Controller for displaying the xml feed.
@@ -16,15 +13,6 @@ use SilverStripe\Control\ContentNegotiator;
  * http://site.com/shoppingfeed.txt
  * </code>
  */
-
-/**
-  * ### @@@@ START REPLACEMENT @@@@ ###
-  * WHY: automated upgrade
-  * OLD: SVG (case sensitive)
-  * NEW: SVG (COMPLEX)
-  * EXP: SVG uploads are now disabled in SS3.7: https://github.com/silverstripe/silverstripe-installer/commit/c25478bef75cc5482852e80a1fa6f1f0e6460e39, if you need to allow SVG uploads you need to update your configuration
-  * ### @@@@ STOP REPLACEMENT @@@@ ###
-  */
 class TSVGoogleShoppingFeedController extends GoogleShoppingFeedController
 {
     /**
@@ -83,4 +71,3 @@ class TSVGoogleShoppingFeedController extends GoogleShoppingFeedController
         return $string;
     }
 }
-
