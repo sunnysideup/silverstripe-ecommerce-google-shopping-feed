@@ -37,10 +37,8 @@ class GoogleShoppingFeedExtension extends DataExtension
                 TextField::create('MPN'),
                 AutoCompleteField::create(
                     'GoogleProductCategoryID',
-                    $this->owner->fieldLabel(GoogleProductCategory::class),
+                    $this->owner->fieldLabel('GoogleProductCategory'),
                     '',
-                    null,
-                    null,
                     GoogleProductCategory::class,
                     'Title'
                 ),
