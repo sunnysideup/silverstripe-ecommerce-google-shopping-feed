@@ -22,22 +22,24 @@ class GoogleProductCategory extends DataObject
         parent::requireDefaultRecords();
 
         if (! GoogleProductCategory::get()->exists()) {
-            DB::alteration_message('Creating categories (this may take 5 - 10 mins)', 'created');
+            if(! empty($_GET['creategooglecategories'])) {
+                DB::alteration_message('Creating categories (this may take 5 - 10 mins)', 'created');
 
-            $default_categories = $this->getGoogleCategories();
-            $count = 0;
+                $default_categories = $this->getGoogleCategories();
+                $count = 0;
 
-            foreach ($default_categories as $key => $value) {
-                $new_cat = GoogleProductCategory::create([
-                    'GoogleID' => $key,
-                    'Title' => $value,
-                ]);
+                foreach ($default_categories as $key => $value) {
+                    $new_cat = GoogleProductCategory::create([
+                        'GoogleID' => $key,
+                        'Title' => $value,
+                    ]);
 
-                $new_cat->write();
-                $count++;
+                    $new_cat->write();
+                    $count++;
+                }
+
+                DB::alteration_message("Created {$count} Categories", 'created');
             }
-
-            DB::alteration_message("Created {$count} Categories", 'created');
         }
     }
 
