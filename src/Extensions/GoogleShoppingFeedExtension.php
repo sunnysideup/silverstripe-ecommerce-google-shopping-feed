@@ -23,6 +23,10 @@ class GoogleShoppingFeedExtension extends DataExtension
         'GoogleProductCategory' => GoogleProductCategory::class,
     ];
 
+    private static $field_labels = [
+        'MPN' => 'MPN / SKU',
+    ];
+
     /**
      * Add the fields to "CMSFields" (if we are not using settings fields).
      *
