@@ -38,7 +38,7 @@ class GoogleShoppingFeedExtension extends DataExtension
             'Root.GoogleShoppingFeed',
             [
                 CheckboxField::create('HideFromShoppingFeed'),
-                TextField::create('MPN'),
+                TextField::create('MPN', 'MPN / SKU'),
                 AutoCompleteField::create(
                     'GoogleProductCategoryID',
                     $this->owner->fieldLabel('GoogleProductCategory'),
