@@ -39,6 +39,7 @@ class TSVGoogleShoppingFeedController extends GoogleShoppingFeedController
     {
         $apiClass = Config::inst()->get(GoogleShoppingFeedController::class, 'api_class');
         $apiClass = new $apiClass();
+
         $data = $apiClass->getTSVData();
         return $this->convertToCSV($data, "\t");
     }
@@ -56,13 +57,10 @@ class TSVGoogleShoppingFeedController extends GoogleShoppingFeedController
             foreach ($row as $field) {
                 if (! $field) {
                     $output[] = $enclosure . $field . $enclosure;
+                } elseif ($encloseAll || preg_match("/(?:{$delimiter_esc}|{$enclosure_esc}|\s)/", $field)) {
+                    $output[] = $enclosure . str_replace($enclosure, $enclosure . $enclosure, $field) . $enclosure;
                 } else {
-                    // Enclose fields containing $delimiter, $enclosure or whitespace
-                    if ($encloseAll || preg_match("/(?:${delimiter_esc}|${enclosure_esc}|\s)/", $field)) {
-                        $output[] = $enclosure . str_replace($enclosure, $enclosure . $enclosure, $field) . $enclosure;
-                    } else {
-                        $output[] = $field;
-                    }
+                    $output[] = $field;
                 }
             }
             $string .= implode($delimiter, $output);

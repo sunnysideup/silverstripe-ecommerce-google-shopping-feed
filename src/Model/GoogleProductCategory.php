@@ -35,7 +35,7 @@ class GoogleProductCategory extends DataObject
                     ]);
 
                     $new_cat->write();
-                    $count++;
+                    ++$count;
                 }
 
                 DB::alteration_message("Created {$count} Categories", 'created');

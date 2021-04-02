@@ -29,8 +29,6 @@ class GoogleShoppingFeedExtension extends DataExtension
 
     /**
      * Add the fields to "CMSFields" (if we are not using settings fields).
-     *
-     * @param FieldList $fields
      */
     public function updateCMSFields(FieldList $fields)
     {
