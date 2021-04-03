@@ -25,7 +25,7 @@ class XMLGoogleShoppingFeedController extends GoogleShoppingFeedController
 
     /**
      * Specific controller action for displaying a particular list of links
-     * for a class
+     * for a class.
      *
      * @return mixed
      */

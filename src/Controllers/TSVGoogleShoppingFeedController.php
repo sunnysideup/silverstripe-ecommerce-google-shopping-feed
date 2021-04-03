@@ -32,6 +32,7 @@ class TSVGoogleShoppingFeedController extends GoogleShoppingFeedController
         $this->getResponse()->addHeader('Content-Disposition', 'attachment; filename=' . $filename . '.txt');
         $this->getResponse()->addHeader('Pragma', 'no-cache');
         $this->getResponse()->addHeader('Expires', 0);
+
         return [];
     }
 
@@ -41,6 +42,7 @@ class TSVGoogleShoppingFeedController extends GoogleShoppingFeedController
         $apiClass = new $apiClass();
 
         $data = $apiClass->getTSVData();
+
         return $this->convertToCSV($data, "\t");
     }
 
@@ -57,7 +59,7 @@ class TSVGoogleShoppingFeedController extends GoogleShoppingFeedController
             foreach ($row as $field) {
                 if (! $field) {
                     $output[] = $enclosure . $field . $enclosure;
-                } elseif ($encloseAll || preg_match("/(?:{$delimiter_esc}|{$enclosure_esc}|\s)/", $field)) {
+                } elseif ($encloseAll || preg_match("/(?:{$delimiter_esc}|{$enclosure_esc}|\\s)/", $field)) {
                     $output[] = $enclosure . str_replace($enclosure, $enclosure . $enclosure, $field) . $enclosure;
                 } else {
                     $output[] = $field;
@@ -66,6 +68,7 @@ class TSVGoogleShoppingFeedController extends GoogleShoppingFeedController
             $string .= implode($delimiter, $output);
             unset($output);
         }
+
         return $string;
     }
 }

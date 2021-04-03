@@ -15,7 +15,7 @@ class GoogleProductCategory extends DataObject
     ];
 
     /**
-     * Build the initial list of Categories
+     * Build the initial list of Categories.
      */
     public function RequireDefaultRecords()
     {
@@ -44,7 +44,7 @@ class GoogleProductCategory extends DataObject
     }
 
     /**
-     * Get a list of google shopping categories which are formatted as:
+     * Get a list of google shopping categories which are formatted as:.
      *
      * Key: ID of category
      * Value: Full name of category
@@ -63,7 +63,7 @@ class GoogleProductCategory extends DataObject
 
         foreach (explode("\n", $fread) as $string) {
             $exploded = explode(' - ', $string);
-            if ($string && count($exploded) === 2) {
+            if ($string && 2 === count($exploded)) {
                 $result[$exploded[0]] = $exploded[1];
             }
         }

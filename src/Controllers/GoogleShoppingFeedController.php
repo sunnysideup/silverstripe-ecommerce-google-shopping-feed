@@ -11,8 +11,6 @@ use Sunnysideup\EcommerceGoogleShoppingFeed\Api\ProductCollectionForGoogleShoppi
  * <code>
  * http://site.com/shoppingfeed.xml
  * </code>
- *
- * @package googlesitemaps
  */
 class GoogleShoppingFeedController extends Controller
 {
@@ -27,7 +25,7 @@ class GoogleShoppingFeedController extends Controller
 
     /**
      * Specific controller action for displaying a particular list of links
-     * for a class
+     * for a class.
      *
      * @return mixed
      */
