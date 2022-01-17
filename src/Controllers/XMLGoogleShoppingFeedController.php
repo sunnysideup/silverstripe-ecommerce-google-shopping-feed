@@ -4,8 +4,6 @@ namespace Sunnysideup\EcommerceGoogleShoppingFeed\Controllers;
 
 use SilverStripe\Core\Config\Config;
 use SilverStripe\SiteConfig\SiteConfig;
-use SilverStripe\View\SSViewer;
-use Sunnysideup\Ecommerce\Model\Money\EcommerceCurrency;
 
 /**
  * Controller for displaying the xml feed.
@@ -23,16 +21,6 @@ class XMLGoogleShoppingFeedController extends GoogleShoppingFeedController
         'index',
     ];
 
-    protected function getExtension() : string
-    {
-        return 'xml';
-    }
-
-    protected function getContentType() : string
-    {
-        return 'application/xml; charset="utf-8"';
-    }
-
     public function SiteConfig()
     {
         return SiteConfig::current_site_config();
@@ -42,7 +30,17 @@ class XMLGoogleShoppingFeedController extends GoogleShoppingFeedController
     {
         $apiClassName = Config::inst()->get(GoogleShoppingFeedController::class, 'api_class');
         $apiClass = new $apiClassName();
+
         return $apiClass->getArrayList();
     }
 
+    protected function getExtension(): string
+    {
+        return 'xml';
+    }
+
+    protected function getContentType(): string
+    {
+        return 'application/xml; charset="utf-8"';
+    }
 }

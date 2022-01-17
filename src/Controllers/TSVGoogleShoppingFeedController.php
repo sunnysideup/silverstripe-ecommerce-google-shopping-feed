@@ -2,11 +2,7 @@
 
 namespace Sunnysideup\EcommerceGoogleShoppingFeed\Controllers;
 
-use SilverStripe\Control\ContentNegotiator;
 use SilverStripe\Core\Config\Config;
-
-use SilverStripe\Core\ClassInfo;
-use SilverStripe\View\SSViewer;
 
 /**
  * Controller for displaying the xml feed.
@@ -24,17 +20,6 @@ class TSVGoogleShoppingFeedController extends GoogleShoppingFeedController
         'index',
     ];
 
-    protected function getExtension() : string
-    {
-        return 'txt';
-    }
-
-    protected function getContentType()
-    {
-        return 'text/tab-separated-values; charset="utf-8"';
-    }
-
-
     public function TSVOutput()
     {
         $apiClass = Config::inst()->get(GoogleShoppingFeedController::class, 'api_class');
@@ -43,6 +28,16 @@ class TSVGoogleShoppingFeedController extends GoogleShoppingFeedController
         $data = $apiClass->getTSVData();
 
         return $this->convertToCSV($data, "\t");
+    }
+
+    protected function getExtension(): string
+    {
+        return 'txt';
+    }
+
+    protected function getContentType()
+    {
+        return 'text/tab-separated-values; charset="utf-8"';
     }
 
     protected function convertToCSV($rows, $delimiter = ';', $enclosure = '"', $encloseAll = false, $nullToMysqlNull = false)

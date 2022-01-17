@@ -2,16 +2,12 @@
 
 namespace Sunnysideup\EcommerceGoogleShoppingFeed\Controllers;
 
-use SilverStripe\Control\Controller;
-use Sunnysideup\EcommerceGoogleShoppingFeed\Api\ProductCollectionForGoogleShoppingFeed;
 use SilverStripe\Control\ContentNegotiator;
-use SilverStripe\Core\Config\Config;
-
+use SilverStripe\Control\Controller;
 use SilverStripe\Core\ClassInfo;
+use SilverStripe\Core\Config\Config;
 use SilverStripe\View\SSViewer;
-
-use SilverStripe\SiteConfig\SiteConfig;
-use Sunnysideup\Ecommerce\Model\Money\EcommerceCurrency;
+use Sunnysideup\EcommerceGoogleShoppingFeed\Api\ProductCollectionForGoogleShoppingFeed;
 
 /**
  * Controller for displaying the xml feed.
@@ -31,13 +27,6 @@ class GoogleShoppingFeedController extends Controller
 
     private static $api_class = ProductCollectionForGoogleShoppingFeed::class;
 
-
-    protected function getFileName() : string
-    {
-        return 'shoppingfeed.'.$this->getExtension();
-    }
-
-
     /**
      * Specific controller action for displaying a particular list of links
      * for a class.
@@ -54,7 +43,13 @@ class GoogleShoppingFeedController extends Controller
         $header->addHeader('Expires', 0);
         $header->addHeader('Content-Type', $this->getContentType());
         $header->addHeader('Content-Disposition', 'attachment; filename=' . $this->getFileName());
-        $header->addHeader('X-Robots-Tag','noindex');
+        $header->addHeader('X-Robots-Tag', 'noindex');
+
         return $this->renderWith(ClassInfo::shortName(static::class));
+    }
+
+    protected function getFileName(): string
+    {
+        return 'shoppingfeed.' . $this->getExtension();
     }
 }
