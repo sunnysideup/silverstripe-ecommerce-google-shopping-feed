@@ -33,7 +33,7 @@ class GoogleShoppingFeedExtension extends DataExtension
     public function updateCMSFields(FieldList $fields)
     {
         $fields->addFieldsToTab(
-            'Root.GoogleShoppingFeed',
+            'Root.Google',
             [
                 CheckboxField::create('HideFromShoppingFeed'),
                 TextField::create('MPN', 'MPN / SKU'),
