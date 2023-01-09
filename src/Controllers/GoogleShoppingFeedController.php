@@ -42,7 +42,7 @@ class GoogleShoppingFeedController extends Controller
         $header->addHeader('Pragma', 'no-cache');
         $header->addHeader('Expires', 0);
         $header->addHeader('Content-Type', $this->getContentType());
-        $header->addHeader('Content-Disposition', 'attachment; filename=' . $this->getFileName());
+        $header->addHeader('Content-Disposition', 'attachment; filename=' . $this->getFilename());
         $header->addHeader('X-Robots-Tag', 'noindex');
 
         return $this->renderWith(ClassInfo::shortName(static::class));
