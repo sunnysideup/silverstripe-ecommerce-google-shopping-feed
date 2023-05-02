@@ -5,6 +5,12 @@ namespace Sunnysideup\EcommerceGoogleShoppingFeed\Model;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\DB;
 
+/**
+ * Class \Sunnysideup\EcommerceGoogleShoppingFeed\Model\GoogleProductCategory
+ *
+ * @property int $GoogleID
+ * @property string $Title
+ */
 class GoogleProductCategory extends DataObject
 {
     private static $table_name = 'GoogleProductCategory';

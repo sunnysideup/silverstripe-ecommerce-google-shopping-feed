@@ -11,6 +11,7 @@ use SilverStripe\SiteConfig\SiteConfig;
  * <code>
  * http://site.com/shoppingfeed.xml
  * </code>
+ *
  */
 class XMLGoogleShoppingFeedController extends GoogleShoppingFeedController
 {

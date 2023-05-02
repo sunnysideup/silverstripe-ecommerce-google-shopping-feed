@@ -15,6 +15,7 @@ use Sunnysideup\EcommerceGoogleShoppingFeed\Api\ProductCollectionForGoogleShoppi
  * <code>
  * http://site.com/shoppingfeed.xml
  * </code>
+ *
  */
 class GoogleShoppingFeedController extends Controller
 {
@@ -35,8 +36,8 @@ class GoogleShoppingFeedController extends Controller
      */
     public function index()
     {
-        Config::modify()->update(SSViewer::class, 'set_source_file_comments', false);
-        Config::modify()->update(ContentNegotiator::class, 'enabled', false);
+        Config::modify()->merge(SSViewer::class, 'set_source_file_comments', false);
+        Config::modify()->merge(ContentNegotiator::class, 'enabled', false);
         // response header
         $header = $this->getResponse();
         $header->addHeader('Pragma', 'no-cache');

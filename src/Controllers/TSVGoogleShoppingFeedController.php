@@ -10,6 +10,7 @@ use SilverStripe\Core\Config\Config;
  * <code>
  * http://site.com/shoppingfeed.txt
  * </code>
+ *
  */
 class TSVGoogleShoppingFeedController extends GoogleShoppingFeedController
 {

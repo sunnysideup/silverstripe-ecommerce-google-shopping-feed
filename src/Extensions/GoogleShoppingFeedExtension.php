@@ -9,6 +9,15 @@ use SilverStripe\ORM\DataExtension;
 use Sunnysideup\EcommerceGoogleShoppingFeed\Model\GoogleProductCategory;
 use TractorCow\AutoComplete\AutoCompleteField;
 
+/**
+ * Class \Sunnysideup\EcommerceGoogleShoppingFeed\Extensions\GoogleShoppingFeedExtension
+ *
+ * @property \Sunnysideup\Ecommerce\Pages\Product|\Sunnysideup\EcommerceGoogleShoppingFeed\Extensions\GoogleShoppingFeedExtension $owner
+ * @property bool $HideFromShoppingFeed
+ * @property string $MPN
+ * @property int $GoogleProductCategoryID
+ * @method \Sunnysideup\EcommerceGoogleShoppingFeed\Model\GoogleProductCategory GoogleProductCategory()
+ */
 class GoogleShoppingFeedExtension extends DataExtension
 {
     /**
