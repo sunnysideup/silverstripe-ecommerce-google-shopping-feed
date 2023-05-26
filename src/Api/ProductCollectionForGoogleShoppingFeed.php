@@ -72,4 +72,5 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
     {
         return [];
     }
+
 }
