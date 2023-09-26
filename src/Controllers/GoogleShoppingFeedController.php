@@ -36,8 +36,8 @@ class GoogleShoppingFeedController extends Controller
      */
     public function index()
     {
-        Config::modify()->merge(SSViewer::class, 'set_source_file_comments', false);
-        Config::modify()->merge(ContentNegotiator::class, 'enabled', false);
+        Config::modify()->set(SSViewer::class, 'set_source_file_comments', false);
+        Config::modify()->set(ContentNegotiator::class, 'enabled', false);
         // response header
         $header = $this->getResponse();
         $header->addHeader('Pragma', 'no-cache');
