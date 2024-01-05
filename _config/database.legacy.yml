@@ -1,8 +1,8 @@
-SilverStripe\ORM\DatabaseAdmin:
-  classname_value_remapping:
-    XMLGoogleShoppingFeedController: Sunnysideup\EcommerceGoogleShoppingFeed\Controllers\XMLGoogleShoppingFeedController
-    GoogleShoppingFeedController: Sunnysideup\EcommerceGoogleShoppingFeed\Controllers\GoogleShoppingFeedController
-    TSVGoogleShoppingFeedController: Sunnysideup\EcommerceGoogleShoppingFeed\Controllers\TSVGoogleShoppingFeedController
-    GoogleShoppingFeedExtension: Sunnysideup\EcommerceGoogleShoppingFeed\Extensions\GoogleShoppingFeedExtension
-    ProductCollectionForGoogleShoppingFeed: Sunnysideup\EcommerceGoogleShoppingFeed\Api\ProductCollectionForGoogleShoppingFeed
-    GoogleProductCategory: Sunnysideup\EcommerceGoogleShoppingFeed\Model\GoogleProductCategory
+# SilverStripe\ORM\DatabaseAdmin:
+#   classname_value_remapping:
+#     XMLGoogleShoppingFeedController: Sunnysideup\EcommerceGoogleShoppingFeed\Controllers\XMLGoogleShoppingFeedController
+#     GoogleShoppingFeedController: Sunnysideup\EcommerceGoogleShoppingFeed\Controllers\GoogleShoppingFeedController
+#     TSVGoogleShoppingFeedController: Sunnysideup\EcommerceGoogleShoppingFeed\Controllers\TSVGoogleShoppingFeedController
+#     GoogleShoppingFeedExtension: Sunnysideup\EcommerceGoogleShoppingFeed\Extensions\GoogleShoppingFeedExtension
+#     ProductCollectionForGoogleShoppingFeed: Sunnysideup\EcommerceGoogleShoppingFeed\Api\ProductCollectionForGoogleShoppingFeed
+#     GoogleProductCategory: Sunnysideup\EcommerceGoogleShoppingFeed\Model\GoogleProductCategory

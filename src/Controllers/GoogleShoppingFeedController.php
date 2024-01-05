@@ -6,7 +6,10 @@ use SilverStripe\Control\ContentNegotiator;
 use SilverStripe\Control\Controller;
 use SilverStripe\Core\ClassInfo;
 use SilverStripe\Core\Config\Config;
+use SilverStripe\Core\Injector\Injector;
+use SilverStripe\SiteConfig\SiteConfig;
 use SilverStripe\View\SSViewer;
+use Sunnysideup\Download\DownloadFile;
 use Sunnysideup\EcommerceGoogleShoppingFeed\Api\ProductCollectionForGoogleShoppingFeed;
 
 /**
@@ -17,7 +20,7 @@ use Sunnysideup\EcommerceGoogleShoppingFeed\Api\ProductCollectionForGoogleShoppi
  * </code>
  *
  */
-class GoogleShoppingFeedController extends Controller
+class GoogleShoppingFeedController extends DownloadFile
 {
     /**
      * @var array
@@ -26,31 +29,30 @@ class GoogleShoppingFeedController extends Controller
         'index',
     ];
 
-    private static $api_class = ProductCollectionForGoogleShoppingFeed::class;
 
-    /**
-     * Specific controller action for displaying a particular list of links
-     * for a class.
-     *
-     * @return mixed
-     */
-    public function index()
-    {
-        Config::modify()->set(SSViewer::class, 'set_source_file_comments', false);
-        Config::modify()->set(ContentNegotiator::class, 'enabled', false);
-        // response header
-        $header = $this->getResponse();
-        $header->addHeader('Pragma', 'no-cache');
-        $header->addHeader('Expires', 0);
-        $header->addHeader('Content-Type', $this->getContentType());
-        $header->addHeader('Content-Disposition', 'attachment; filename=' . $this->getFilename());
-        $header->addHeader('X-Robots-Tag', 'noindex');
+    private static $dependencies = [
+        'dataProviderAPI' => '%$' . ProductCollectionForGoogleShoppingFeed::class,
+    ];
 
-        return $this->renderWith(ClassInfo::shortName(static::class));
-    }
 
     protected function getFileName(): string
     {
-        return 'shoppingfeed.' . $this->getExtension();
+        return 'shoppingfeed.xml';
     }
+
+    protected function getContentType(): string
+    {
+        return 'application/xml; charset="utf-8"';
+    }
+
+    public function SiteConfig()
+    {
+        return SiteConfig::current_site_config();
+    }
+
+    public function Items()
+    {
+        return $$this->dataProviderAPI->getArrayList();
+    }
+
 }

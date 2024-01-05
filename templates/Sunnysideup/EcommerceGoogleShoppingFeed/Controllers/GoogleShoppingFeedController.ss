@@ -1,5 +1,5 @@
-<?xml version="1.0"?>
-<rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:pj="https://schema.prisjakt.nu/ns/1.0" xmlns:g="http://base.google.com/ns/1.0" version="3.0">
     <channel>
         <title>$SiteConfig.Title</title>
         <link>$BaseHref</link>
@@ -22,6 +22,5 @@
             <g:custom_label_1>$ParentTitle</g:custom_label_1>
         </item>
         <% end_loop %>
-
     </channel>
 </rss>
