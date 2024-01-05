@@ -5,7 +5,7 @@
 ```yml
 Sunnysideup\EcommerceGoogleShoppingFeed\Controllers\GoogleShoppingFeedController:
     dependencies:
-        dataProviderAPI: App\Provider\CustomGoogleShoppingFeedController
+        dataProviderAPI: '%$App\Provider\CustomGoogleShoppingFeedController'
 
 # ============= OR ================
 

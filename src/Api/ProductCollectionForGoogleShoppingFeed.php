@@ -11,6 +11,7 @@ use SilverStripe\View\ArrayData;
 use Sunnysideup\Ecommerce\Api\Converters\CsvFunctionality;
 use Sunnysideup\Ecommerce\Api\ProductCollection;
 use Sunnysideup\Ecommerce\Model\Config\EcommerceDBConfig;
+use Sunnysideup\Ecommerce\Model\Money\EcommerceCurrency;
 use Sunnysideup\Ecommerce\Pages\Product;
 
 class ProductCollectionForGoogleShoppingFeed extends ProductCollection
@@ -22,19 +23,9 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
         $assetUrl = Controller::join_links($baseURL, 'assets');
         // array
         $array = [];
-        $array[] = [
-            'id', //1
-            'title', //2
-            'price', //3
-            'link', //4
-            'availability', //5
-            'condition', //6
-            'image_link', //7
-        ];
         // products
         $products = $this->getArrayBasic();
         foreach ($products as $product) {
-            $productArray = [];
             $className = $product['ClassName'] ?? Product::class;
             if (method_exists($className, 'get_data_for_google_shopping_feed')) {
                 $productArray = $className::get_data_for_google_shopping_feed($product['ID']);
@@ -42,20 +33,20 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
 
                 $internalItemID = Convert::raw2xml($product['InternalItemID']);
                 $productTitle = Convert::raw2xml($product['ProductTitle']);
-                $price = $product['Price'];
-                $link = Controller::join_links($baseURL, Convert::raw2xml($product['InternalItemID'])) . '?utm_source=PriceSpy';
-                $stock = 'in_stock';
+                $price = $this->priceToGooglePrice($product['Price']);
+                $link = Controller::join_links($baseURL, Convert::raw2xml($product['InternalItemID']));
+                $availability = 'in_stock';
                 $condition = 'new';
                 $imageLink = Controller::join_links($assetUrl, ($product['FileFilename'] ?: $defaultImageLink));
-
                 $productArray = [
                     'id' => $internalItemID, //1. Your-item-number
                     'title' => $productTitle, //2. Product-name
                     'price' => $price, //3. price-including-gst
                     'link' => $link, //4. link
-                    'stock' => $stock, //5. stock status
+                    'availability' => $availability, //5. stock status
                     'condition' => $condition, //6. condition
                     'image_link' => $imageLink, //7. image_link
+                    'google_product_category' => 'TBC',
                 ];
             }
             // ensure special chars are converted to HTML entities for XML output
@@ -65,6 +56,16 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
         return $array;
     }
 
+    protected static $currency = '';
+
+    protected function priceToGooglePrice(float $price)
+    {
+        if(! self::$currency) {
+            self::$currency = strtoupper(EcommerceCurrency::default_currency_code());
+        }
+
+        return number_format($price, 2, '.', '') . ' ' . strtoupper(self::$currency);
+    }
 
 
     public function getSQL(?string $where = ''): string
