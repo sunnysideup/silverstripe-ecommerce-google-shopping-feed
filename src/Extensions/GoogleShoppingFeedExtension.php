@@ -2,10 +2,12 @@
 
 namespace Sunnysideup\EcommerceGoogleShoppingFeed\Extensions;
 
+use DOMDocument;
 use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\TextField;
 use SilverStripe\ORM\DataExtension;
+use SimpleXMLElement;
 use Sunnysideup\EcommerceGoogleShoppingFeed\Model\GoogleProductCategory;
 use TractorCow\AutoComplete\AutoCompleteField;
 
@@ -56,4 +58,6 @@ class GoogleShoppingFeedExtension extends DataExtension
             ]
         );
     }
+
+
 }

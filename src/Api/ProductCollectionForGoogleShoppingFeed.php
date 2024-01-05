@@ -92,6 +92,8 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
                 "File" ON "Product_Live"."ImageID" = "File"."ID"
             WHERE
                 ' . $where . '
+                "Product_Live"."HideFromShoppingFeed" = 0
+                AND
                 "Product_Live"."AllowPurchase" = 1
             ' . (Director::isDev() ? 'ORDER BY RAND() LIMIT 10' : 'ORDER BY "SiteTree_Live"."ID" DESC') . '
                 ;
