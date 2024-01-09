@@ -31,10 +31,10 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
                 $productArray = $className::get_data_for_google_shopping_feed($product['ID']);
             } else {
 
-                $internalItemID = Convert::raw2xml($product['InternalItemID']);
-                $productTitle = Convert::raw2xml($product['ProductTitle']);
+                $internalItemID = ($product['InternalItemID']);
+                $productTitle = ($product['ProductTitle']);
                 $price = $this->priceToGooglePrice($product['Price']);
-                $link = Controller::join_links($baseURL, Convert::raw2xml($product['InternalItemID']));
+                $link = Controller::join_links($baseURL, ($product['InternalItemID']));
                 $availability = 'in_stock';
                 $condition = 'new';
                 $imageLink = Controller::join_links($assetUrl, ($product['FileFilename'] ?: $defaultImageLink));
@@ -48,6 +48,9 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
                     'image_link' => $imageLink, //7. image_link
                     'google_product_category' => 'TBC',
                 ];
+                foreach($productArray as $key => $value) {
+                    $productArray[$key] = ($value);
+                }
             }
             // ensure special chars are converted to HTML entities for XML output
             // do other stuff!
@@ -60,7 +63,7 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
 
     protected function priceToGooglePrice(float $price)
     {
-        if(! self::$currency) {
+        if(!self::$currency) {
             self::$currency = strtoupper(EcommerceCurrency::default_currency_code());
         }
 
