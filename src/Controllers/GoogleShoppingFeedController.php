@@ -64,7 +64,7 @@ class GoogleShoppingFeedController extends DownloadFile
         if($this->useTemplate) {
             return parent::getFileData();
         } else {
-            return CachedDownload::inst($this->getFilename())
+            return CachedDownload::inst($this->getFilename(), $this->getTitle())
                 ->getData(
                     function () {return $this->getDataAsXMLInner($this->dataProviderAPI->getArrayFull());}
                 );
