@@ -44,6 +44,16 @@ class GoogleShoppingFeedController extends DownloadFile
         return 'application/xml; charset="utf-8"';
     }
 
+    protected function getTitle(): string
+    {
+        return 'Google Shopping Feed';
+    }
+
+    protected function getSchema(): string
+    {
+        return '<rss xmlns:g="http://base.google.com/ns/1.0" version="3.0">';
+    }
+
     public function SiteConfig()
     {
         return SiteConfig::current_site_config();
@@ -71,7 +81,7 @@ class GoogleShoppingFeedController extends DownloadFile
     {
         $xmlString =
             '<?xml version="1.0" encoding="UTF-8"?>
-                <rss xmlns:pj="https://schema.prisjakt.nu/ns/1.0" xmlns:g="http://base.google.com/ns/1.0" version="3.0">
+                ' . $this->getSchema() . '
                 <channel>
                     <title>' . $this->SiteConfig()->Title . '</title>
                     <description>' . $this->SiteConfig()->Tagline . '</description>
