@@ -90,6 +90,13 @@ class GoogleShoppingFeedController extends DownloadFile
         return $this->formatXml($xml->asXML());
     }
 
+    /**
+     * filters out empty values and adds child nodes to xml
+     *
+     * @param [type] $item
+     * @param SimpleXMLElement $xml
+     * @return void
+     */
     protected function addArrayToXml($item, SimpleXMLElement $xml)
     {
         foreach ($item as $key => $value) {
