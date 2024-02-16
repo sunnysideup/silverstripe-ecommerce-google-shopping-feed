@@ -6,12 +6,9 @@
 Sunnysideup\EcommerceGoogleShoppingFeed\Controllers\GoogleShoppingFeedController:
     dependencies:
         dataProviderAPI: '%$App\Provider\CustomGoogleShoppingFeedController'
-
-# ============= OR ================
-
-Sunnysideup\EcommerceGoogleShoppingFeed\Controllers\GoogleShoppingFeedController:
-    dependencies:
+        # ============= OR ================
         dataProviderAPI: '%$GoogleShoppingFeedDataProviderAPI'
+
 SilverStripe\Core\Injector\Injector:
     GoogleShoppingFeedDataProviderAPI:
         class: App\Provider\CustomGoogleShoppingFeedController
