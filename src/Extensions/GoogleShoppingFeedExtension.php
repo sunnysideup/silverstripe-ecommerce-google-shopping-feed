@@ -3,11 +3,13 @@
 namespace Sunnysideup\EcommerceGoogleShoppingFeed\Extensions;
 
 use DOMDocument;
+use SilverStripe\Core\Injector\Injector;
 use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\TextField;
 use SilverStripe\ORM\DataExtension;
 use SimpleXMLElement;
+use Sunnysideup\EcommerceGoogleShoppingFeed\Api\ProductCollectionForGoogleShoppingFeed;
 use Sunnysideup\EcommerceGoogleShoppingFeed\Model\GoogleProductCategory;
 use TractorCow\AutoComplete\AutoCompleteField;
 
@@ -59,5 +61,23 @@ class GoogleShoppingFeedExtension extends DataExtension
         );
     }
 
+    public function MyGoogleFeedXmlArray(): array
+    {
+        $obj = Injector::inst()->get(ProductCollectionForGoogleShoppingFeed::class);
+        return array_pop(
+            $obj->oneProductRaw2Array(
+                $obj->getArrayFull('"InternalItemID" = \'' . $this->getOwner()->InternalItemID . '\'')
+            )
+        );
+    }
 
+    public function MySchemaDotOrgData(): array
+    {
+        $obj = Injector::inst()->get(ProductCollectionForGoogleShoppingFeed::class);
+        return array_pop(
+            $obj->oneProductArray2SchemaDotOrg(
+                $obj->getArrayFull('"InternalItemID" = \'' . $this->getOwner()->InternalItemID . '\'')
+            )
+        );
+    }
 }

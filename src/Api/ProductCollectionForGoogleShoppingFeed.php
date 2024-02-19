@@ -16,47 +16,90 @@ use Sunnysideup\Ecommerce\Pages\Product;
 
 class ProductCollectionForGoogleShoppingFeed extends ProductCollection
 {
-    public function getArrayFull(): array
-    {
-        $defaultImageLink = EcommerceDBConfig::current_ecommerce_db_config()->DefaultProductImage()->Filename;
-        $baseURL = Director::absoluteBaseURL();
-        $assetUrl = Controller::join_links($baseURL, 'assets');
-        // array
-        $array = [];
-        // products
-        $products = $this->getArrayBasic();
-        foreach ($products as $product) {
-            $className = $product['ClassName'] ?? Product::class;
-            if (method_exists($className, 'get_data_for_google_shopping_feed')) {
-                $productArray = $className::get_data_for_google_shopping_feed($product['ID']);
-            } else {
+    protected $defaultImageLink = '';
+    protected $baseURL = '';
+    protected $assetsUrl = '';
 
-                $internalItemID = ($product['InternalItemID']);
-                $productTitle = ($product['ProductTitle']);
-                $price = $this->priceToGooglePrice($product['Price']);
-                $link = Controller::join_links($baseURL, ($product['InternalItemID']));
-                $availability = 'in_stock';
-                $condition = 'new';
-                $imageLink = Controller::join_links($assetUrl, ($product['FileFilename'] ?: $defaultImageLink));
-                $productArray = [
-                    'id' => $internalItemID, //1. Your-item-number
-                    'title' => $productTitle, //2. Product-name
-                    'price' => $price, //3. price-including-gst
-                    'link' => $link, //4. link
-                    'availability' => $availability, //5. stock status
-                    'condition' => $condition, //6. condition
-                    'image_link' => $imageLink, //7. image_link
-                    'google_product_category' => 'TBC',
-                ];
-                foreach($productArray as $key => $value) {
-                    $productArray[$key] = ($value);
-                }
+
+    public function __construct()
+    {
+        $this->defaultImageLink = EcommerceDBConfig::current_ecommerce_db_config()->DefaultProductImage()->Link();
+        $this->baseURL = Director::absoluteBaseURL();
+        $this->assetsUrl = Director::baseURL() . 'assets/';
+    }
+
+    public function getArrayFull(?string $where = ''): array
+    {
+        $array = [];
+        $products = $this->getArrayBasic($where);
+        foreach ($products as $productRaw) {
+            $className = $productRaw['ClassName'] ?? Product::class;
+            if (method_exists($className, 'get_data_for_google_shopping_feed')) {
+                $productArray = $className::get_data_for_google_shopping_feed($productRaw['ID']);
+            } else {
+                $productArray = $this->oneProductRaw2Array($productRaw);
             }
             // ensure special chars are converted to HTML entities for XML output
             // do other stuff!
-            $array[] = $productArray;
+            if(!empty($productArray)) {
+                $array[] = $productArray;
+            }
         }
         return $array;
+    }
+
+    public function oneProductRaw2Array(array $productRaw): array
+    {
+        $internalItemID = ($productRaw['InternalItemID']);
+        $productTitle = $productRaw['ProductTitle'] ?? $productRaw['Title'];
+        $price = $this->priceToGooglePrice($productRaw['Price']);
+        $link = Controller::join_links($this->baseURL, ($productRaw['InternalItemID']));
+        $availability = 'in_stock';
+        $condition = 'new';
+        $imageLink = Controller::join_links($this->assetsUrl, ($productRaw['FileFilename'] ?: $this->defaultImageLink));
+        $productArray = [
+            'id' => $internalItemID, //1. Your-item-number
+            'title' => $productTitle, //2. Product-name
+            'price' => $price, //3. price-including-gst
+            'link' => $link, //4. link
+            'availability' => $availability, //5. stock status
+            'condition' => $condition, //6. condition
+            'image_link' => $imageLink, //7. image_link
+            'google_product_category' => 'TBC',
+        ];
+        foreach($productArray as $key => $value) {
+            $productArray[$key] = ($value);
+        }
+        return $productArray;
+    }
+
+    public function oneProductArray2SchemaDotOrg(array $productArray)
+    {
+        $schemaProduct = [
+            "@context" => "https://schema.org/",
+            "@type" => "Product",
+            "name" => $productArray['title'] ?? '',
+            "image" => $productArray['image_link'] ?? '',
+            "description" => $productArray['product_type'] ?? '',
+            "sku" => $productArray['id'] ?? '',
+            "brand" => [
+                "@type" => "Brand",
+                "name" => $productArray['brand'] ?? ''
+            ],
+            "offers" => [
+                "@type" => "Offer",
+                "price" => $productArray['price'] ?? '',
+                "priceCurrency" => "NZD",
+                "itemCondition" => "https://schema.org/NewCondition",
+                "availability" => "https://schema.org/InStock",
+                "url" => $productArray['link'] ?? ''
+            ],
+            "mpn" => $productArray['mpn'] ?? '',
+            "gtin" => $productArray['gtin'] ?? '',
+            // Add more fields as needed
+        ];
+
+        return $schemaProduct;
     }
 
     protected static $currency = '';
