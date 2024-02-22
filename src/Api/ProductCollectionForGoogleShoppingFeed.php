@@ -73,35 +73,6 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
         return $productArray;
     }
 
-    public function oneProductArray2SchemaDotOrg(array $productArray)
-    {
-        $schemaProduct = [
-            "@context" => "https://schema.org/",
-            "@type" => "Product",
-            "name" => $productArray['title'] ?? '',
-            "image" => $productArray['image_link'] ?? '',
-            "description" => $productArray['product_type'] ?? '',
-            "sku" => $productArray['id'] ?? '',
-            "brand" => [
-                "@type" => "Brand",
-                "name" => $productArray['brand'] ?? ''
-            ],
-            "offers" => [
-                "@type" => "Offer",
-                "price" => $productArray['price'] ?? '',
-                "priceCurrency" => "NZD",
-                "itemCondition" => "https://schema.org/NewCondition",
-                "availability" => "https://schema.org/InStock",
-                "url" => $productArray['link'] ?? ''
-            ],
-            "mpn" => $productArray['mpn'] ?? '',
-            "gtin" => $productArray['gtin'] ?? '',
-            // Add more fields as needed
-        ];
-
-        return $schemaProduct;
-    }
-
     protected static $currency = '';
 
     protected function priceToGooglePrice(float $price)

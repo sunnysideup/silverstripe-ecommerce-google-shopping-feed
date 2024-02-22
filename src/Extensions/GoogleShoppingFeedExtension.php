@@ -71,13 +71,4 @@ class GoogleShoppingFeedExtension extends DataExtension
         );
     }
 
-    public function MySchemaDotOrgData(): array
-    {
-        $obj = Injector::inst()->get(ProductCollectionForGoogleShoppingFeed::class);
-        return array_pop(
-            $obj->oneProductArray2SchemaDotOrg(
-                $obj->getArrayFull('"InternalItemID" = \'' . $this->getOwner()->InternalItemID . '\'')
-            )
-        );
-    }
 }
