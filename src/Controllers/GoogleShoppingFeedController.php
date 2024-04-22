@@ -131,4 +131,16 @@ class GoogleShoppingFeedController extends DownloadFile
         return $dom->saveXML();
     }
 
+
+    protected function getMaxAgeInMinutes(): ?int
+    {
+        return 60; // set to null to use default
+    }
+
+    protected function getDeleteOnFlush(): ?bool
+    {
+        return false; // set to null to use default
+    }
+
+
 }
