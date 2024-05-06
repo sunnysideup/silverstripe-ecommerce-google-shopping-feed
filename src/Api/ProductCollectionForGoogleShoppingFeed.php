@@ -87,6 +87,7 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
 
     public function getSQL(?string $where = ''): string
     {
+
         return '
             SELECT
                 "SiteTree_Live"."ID" ProductID,
@@ -108,14 +109,40 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
 
             LEFT JOIN
                 "File" ON "Product_Live"."ImageID" = "File"."ID"
-            WHERE
-                ' . $where . '
-                "Product_Live"."HideFromShoppingFeed" = 0
-                AND
-                "Product_Live"."AllowPurchase" = 1
-            ' . (Director::isDev() ? 'ORDER BY RAND() LIMIT 10' : 'ORDER BY "SiteTree_Live"."ID" DESC') . '
-                ;
-        ';
+            WHERE ' . $this->buildWhere($where) . '
+            ' .
+            $this->buildSort() .
+            $this->buildLimit() .
+            ';';
 
+    }
+
+    protected function buildWhere(?string $where = ''): string
+    {
+        return ' ( ' . implode(' ) AND ( ', $this->getWhereArray($where)) . ')';
+    }
+
+    protected function getWhereArray(?string $where = ''): array
+    {
+        $array = [$where];
+        $array[] = '"Product_Live"."HideFromShoppingFeed" <> 1';
+        $array[] = '"Product_Live"."AllowPurchase" <> 0';
+        // min price
+        $minPrice = EcommerceDBConfig::current_ecommerce_db_config()->MinimumPriceForGoogleShoppingFeed;
+        if($minPrice) {
+            $array[] = '"Product_Live"."Price" >= ' . $minPrice ;
+        }
+
+        return array_filter($array);
+    }
+
+    protected function buildSort(): string
+    {
+        return (Director::isDev() ? 'ORDER BY RAND() ' : 'ORDER BY "SiteTree_Live"."ID" DESC');
+    }
+
+    protected function buildLimit(): string
+    {
+        return (Director::isDev() ? 'LIMIT 10' : '');
     }
 }

@@ -46,7 +46,8 @@ class GoogleShoppingFeedController extends DownloadFile
 
     protected function getTitle(): string
     {
-        return 'Google Shopping Feed';
+        $count = count($this->getRawDataForGoogleShoppingFeed());
+        return 'Google Shopping Feed ('.$count.')';
     }
 
     protected function getSchema(): string
@@ -66,7 +67,7 @@ class GoogleShoppingFeedController extends DownloadFile
         } else {
             return CachedDownload::inst($this->getFilename(), $this->getTitle())
                 ->getData(
-                    function () {return $this->getDataAsXMLInner($this->dataProviderAPI->getArrayFull());},
+                    function () {return $this->getDataAsXMLInner($this->getRawDataForGoogleShoppingFeed());},
                     $this->getFileName(),
                 );
         }
@@ -99,6 +100,16 @@ class GoogleShoppingFeedController extends DownloadFile
             $this->addArrayToXml($entry, $item);
         }
         return $this->formatXml($xml->asXML());
+    }
+
+    protected static array $rawDataForGoogleShoppingFeed = [];
+
+    public function getRawDataForGoogleShoppingFeed(): array
+    {
+        if(!self::$rawDataForGoogleShoppingFeed) {
+            self::$rawDataForGoogleShoppingFeed = $this->dataProviderAPI->getArrayFull();
+        }
+        return self::$rawDataForGoogleShoppingFeed;
     }
 
     /**

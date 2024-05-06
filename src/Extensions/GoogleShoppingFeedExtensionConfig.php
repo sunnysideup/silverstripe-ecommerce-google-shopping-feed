@@ -5,6 +5,7 @@ namespace Sunnysideup\EcommerceGoogleShoppingFeed\Extensions;
 use DOMDocument;
 use SilverStripe\Core\Injector\Injector;
 use SilverStripe\Forms\CheckboxField;
+use SilverStripe\Forms\CurrencyField;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\TextField;
 use SilverStripe\ORM\DataExtension;
@@ -22,22 +23,13 @@ use TractorCow\AutoComplete\AutoCompleteField;
  * @property int $GoogleProductCategoryID
  * @method \Sunnysideup\EcommerceGoogleShoppingFeed\Model\GoogleProductCategory GoogleProductCategory()
  */
-class GoogleShoppingFeedExtension extends DataExtension
+class GoogleShoppingFeedExtensionConfig extends DataExtension
 {
     /**
      * @var array
      */
     private static $db = [
-        'HideFromShoppingFeed' => 'Boolean',
-        'MPN' => 'Varchar(255)',
-    ];
-
-    private static $has_one = [
-        'GoogleProductCategory' => GoogleProductCategory::class,
-    ];
-
-    private static $field_labels = [
-        'MPN' => 'MPN / SKU',
+        'MinimumPriceForGoogleShoppingFeed' => 'Currency',
     ];
 
     /**
@@ -48,27 +40,11 @@ class GoogleShoppingFeedExtension extends DataExtension
         $fields->addFieldsToTab(
             'Root.GoogleFeed',
             [
-                CheckboxField::create('HideFromShoppingFeed'),
-                TextField::create('MPN', 'MPN / SKU'),
-                AutoCompleteField::create(
-                    'GoogleProductCategoryID',
-                    $this->getOwner()->fieldLabel('GoogleProductCategory'),
-                    '',
-                    GoogleProductCategory::class,
-                    'Title'
-                ),
+                CurrencyField::create('MinimumPriceForGoogleShoppingFeed', 'Minimum Price for Feed')
+                    ->setDescription('Minimum Product Price for Google Shopping Feed (leave empty to include all products)'),
             ]
         );
     }
 
-    public function MyGoogleFeedXmlArray(): array
-    {
-        $obj = Injector::inst()->get(ProductCollectionForGoogleShoppingFeed::class);
-        return array_pop(
-            $obj->oneProductRaw2Array(
-                $obj->getArrayFull('"InternalItemID" = \'' . $this->getOwner()->InternalItemID . '\'')
-            )
-        );
-    }
 
 }
