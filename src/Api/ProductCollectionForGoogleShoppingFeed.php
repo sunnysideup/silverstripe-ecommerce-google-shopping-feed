@@ -119,10 +119,10 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
 
     protected function buildWhere(?string $where = ''): string
     {
-        return ' ( ' . implode(' ) AND ( ', $this->getWhereArray($where)) . ')';
+        return ' ( ' . implode(' ) AND ( ', $this->getBuildWhereArray($where)) . ')';
     }
 
-    protected function getWhereArray(?string $where = ''): array
+    protected function getBuildWhereArray(?string $where = ''): array
     {
         $array = [$where];
         $array[] = '"Product_Live"."HideFromShoppingFeed" <> 1';
