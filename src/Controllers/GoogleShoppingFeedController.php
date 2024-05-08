@@ -106,14 +106,14 @@ class GoogleShoppingFeedController extends DownloadFile
         return $this->formatXml($xml->asXML());
     }
 
-    protected static array $rawDataForGoogleShoppingFeed = [];
+    protected array|null $rawDataForGoogleShoppingFeed = null;
 
     public function getRawDataForGoogleShoppingFeed(): array
     {
-        if(!self::$rawDataForGoogleShoppingFeed) {
-            self::$rawDataForGoogleShoppingFeed = $this->dataProviderAPI->getArrayFull();
+        if($this->rawDataForGoogleShoppingFeed === null) {
+            $this->rawDataForGoogleShoppingFeed = $this->dataProviderAPI->getArrayFull();
         }
-        return self::$rawDataForGoogleShoppingFeed;
+        return $this->rawDataForGoogleShoppingFeed;
     }
 
     /**
