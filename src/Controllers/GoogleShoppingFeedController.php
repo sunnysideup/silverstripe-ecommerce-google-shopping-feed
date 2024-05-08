@@ -46,8 +46,12 @@ class GoogleShoppingFeedController extends DownloadFile
 
     protected function getTitle(): string
     {
+        return 'Google Shopping Feed ('.$this->getProductCount().')';
+    }
+
+    protected function getProductCount()
+    {
         $count = count($this->getRawDataForGoogleShoppingFeed());
-        return 'Google Shopping Feed ('.$count.')';
     }
 
     protected function getSchema(): string
