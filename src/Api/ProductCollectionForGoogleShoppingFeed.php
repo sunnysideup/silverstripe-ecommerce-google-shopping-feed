@@ -143,6 +143,6 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
 
     protected function buildLimit(): string
     {
-        return (Director::isDev() ? 'LIMIT 10' : '');
+        return (Director::isDev() ? 'LIMIT 100' : '');
     }
 }
