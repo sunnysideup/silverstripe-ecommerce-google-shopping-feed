@@ -51,7 +51,7 @@ class GoogleShoppingFeedController extends DownloadFile
 
     protected function getProductCount()
     {
-        $count = count($this->getRawDataForGoogleShoppingFeed());
+        return count($this->getRawDataForGoogleShoppingFeed());
     }
 
     protected function getSchema(): string
