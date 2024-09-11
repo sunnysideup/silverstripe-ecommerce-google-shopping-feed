@@ -66,7 +66,7 @@ class GoogleShoppingFeedController extends DownloadFile
 
     public function getFileData(): string
     {
-        if($this->useTemplate) {
+        if ($this->useTemplate) {
             return parent::getFileData();
         } else {
             return CachedDownload::inst($this->getFilename(), $this->getTitle())
@@ -110,8 +110,8 @@ class GoogleShoppingFeedController extends DownloadFile
 
     public function getRawDataForGoogleShoppingFeed(): array
     {
-        if($this->rawDataForGoogleShoppingFeed === null) {
-            $this->rawDataForGoogleShoppingFeed = $this->dataProviderAPI->getArrayFull();
+        if ($this->rawDataForGoogleShoppingFeed === null) {
+            $this->rawDataForGoogleShoppingFeed = $this->dataProviderAPI->getArrayFull(null);
         }
         return $this->rawDataForGoogleShoppingFeed;
     }
@@ -130,7 +130,7 @@ class GoogleShoppingFeedController extends DownloadFile
             if (is_array($value)) {
                 $subnode = $xml->addChild($key, null, 'http://base.google.com/ns/1.0');
                 $this->addArrayToXml($value, $subnode);
-            } elseif($value) {
+            } elseif ($value) {
                 $xml->addChild($key, htmlspecialchars((string) $value), 'http://base.google.com/ns/1.0');
             }
         }

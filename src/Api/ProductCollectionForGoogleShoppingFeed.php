@@ -28,7 +28,7 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
         $this->assetsUrl = Director::baseURL() . 'assets/';
     }
 
-    public function getArrayFull(?string $where = ''): array
+    public function getArrayFull(string|array|null $where = ''): array
     {
         $array = [];
         $products = $this->getArrayBasic($where);
@@ -41,7 +41,7 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
             }
             // ensure special chars are converted to HTML entities for XML output
             // do other stuff!
-            if(!empty($productArray)) {
+            if (!empty($productArray)) {
                 $array[] = $productArray;
             }
         }
@@ -67,7 +67,7 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
             'image_link' => $imageLink, //7. image_link
             'google_product_category' => 'TBC',
         ];
-        foreach($productArray as $key => $value) {
+        foreach ($productArray as $key => $value) {
             $productArray[$key] = ($value);
         }
         return $productArray;
@@ -77,7 +77,7 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
 
     protected function priceToGooglePrice(float $price)
     {
-        if(!self::$currency) {
+        if (!self::$currency) {
             self::$currency = strtoupper(EcommerceCurrency::default_currency_code());
         }
 
@@ -87,7 +87,7 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
 
     public function getSQL(?string $where = ''): string
     {
-
+        $array = $this->getWhereArrayForSql($where);
         return '
             SELECT
                 "SiteTree_Live"."ID" ProductID,
@@ -109,7 +109,7 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
 
             LEFT JOIN
                 "File" ON "Product_Live"."ImageID" = "File"."ID"
-            WHERE ' . $this->buildWhere($where) . '
+            WHERE ' . $this->buildWhere($array) . '
             ' .
             $this->buildSort() .
             $this->buildLimit() .
@@ -117,23 +117,34 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
 
     }
 
-    protected function buildWhere(?string $where = ''): string
+    protected function buildWhere(array|string|null $where = ''): string
     {
-        return ' ( ' . implode(' ) AND ( ', $this->getBuildWhereArray($where)) . ')';
+        $array = $this->standardiseToArray($where);
+        return ' ( ' . implode(' ) AND ( ', $array) . ')';
     }
 
-    protected function getBuildWhereArray(?string $where = ''): array
+    protected function getWhereArrayForSql(array|string|null $where = ''): array
     {
-        $array = [$where];
+        $array = $this->standardiseToArray($where);
         $array[] = '"Product_Live"."HideFromShoppingFeed" <> 1';
         $array[] = '"Product_Live"."AllowPurchase" <> 0';
         // min price
         $minPrice = EcommerceDBConfig::current_ecommerce_db_config()->MinimumPriceForGoogleShoppingFeed;
-        if($minPrice) {
+        if ($minPrice) {
             $array[] = '"Product_Live"."Price" >= ' . $minPrice ;
         }
 
-        return array_filter($array);
+        return $array;
+    }
+
+    private function standardiseToArray(array|string|null $where = ''): array
+    {
+        if (! is_array($where)) {
+            $where = [$where];
+        }
+        $where = array_filter($where);
+        $where = array_unique($where);
+        return $where;
     }
 
     protected function buildSort(): string
