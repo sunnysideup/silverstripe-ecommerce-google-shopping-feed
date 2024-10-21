@@ -7,6 +7,8 @@ use SilverStripe\Control\Director;
 use SilverStripe\Core\Convert;
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\ORM\DB;
+use SilverStripe\ORM\FieldType\DBField;
+use SilverStripe\Reports\Report;
 use SilverStripe\View\ArrayData;
 use Sunnysideup\Ecommerce\Api\Converters\CsvFunctionality;
 use Sunnysideup\Ecommerce\Api\ProductCollection;
@@ -155,5 +157,17 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
     protected function buildLimit(): string
     {
         return (Director::isDev() ? 'LIMIT 100' : '');
+    }
+
+    protected function htmlToCleanText(string $s) : string
+    {
+        if(! $s ) { 
+            return '';
+        }
+        $s = strip_tags($s);
+        $s = DBField::create_field('Varchar', $s)->LimitCharactersToClosestWord(300, true);
+        $s = preg_replace('/[^a-zA-Z0-9\s]/', ' ', $s);
+        $s = preg_replace('/\s+/', ' ', $s);
+        return trim($s);
     }
 }
