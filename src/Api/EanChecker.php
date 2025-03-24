@@ -2,6 +2,7 @@
 
 namespace Sunnysideup\EcommerceGoogleShoppingFeed\Api;
 
+use Real\Validator\Gtin;
 use Real\Validator\Gtin\Factory;
 use Real\Validator\Gtin\NonNormalizable;
 use SilverStripe\Control\Controller;
@@ -17,7 +18,9 @@ use Sunnysideup\Ecommerce\Pages\Product;
 
 class EanChecker
 {
-    public static function is_valid_ean(string $ean): bool
+
+
+    public static function is_valid_ean(string $ean, ?bool $returnAsObject = false): bool|Gtin
     {
         if (empty($ean)) {
             return false;
@@ -27,19 +30,20 @@ class EanChecker
         } catch (NonNormalizable $e) {
             return false;
         }
+        if ($returnAsObject) {
+            if ($gtin->checkDigit()) {
+                return $gtin;
+            }
+            return false;
+        }
         return $gtin->checkDigit();
     }
+
     public static function format_ean(string $ean): string
     {
-        if (self::is_valid_ean($ean)) {
-            try {
-                $gtin = Factory::create($ean);
-                if ($gtin->checkDigit()) {
-                    return $gtin->padded();
-                }
-            } catch (NonNormalizable $e) {
-                // do nothing
-            }
+        $gtin = self::is_valid_ean($ean, true);
+        if ($gtin) {
+            return $gtin->padded();
         }
         return '';
     }
