@@ -7,7 +7,7 @@ use SilverStripe\Control\Director;
 use SilverStripe\SiteConfig\SiteConfig;
 use SimpleXMLElement;
 use Sunnysideup\Download\Control\DownloadFile;
-use Sunnysideup\Download\Control\Model\CachedDownload;
+use Sunnysideup\Download\Model\CachedDownload;
 use Sunnysideup\EcommerceGoogleShoppingFeed\Api\ProductCollectionForGoogleShoppingFeed;
 
 /**
@@ -46,7 +46,7 @@ class GoogleShoppingFeedController extends DownloadFile
 
     protected function getTitle(): string
     {
-        return 'Google Shopping Feed ('.$this->getProductCount().')';
+        return 'Google Shopping Feed (' . $this->getProductCount() . ')';
     }
 
     protected function getProductCount()
@@ -71,7 +71,9 @@ class GoogleShoppingFeedController extends DownloadFile
         } else {
             return CachedDownload::inst($this->getFilename(), $this->getTitle())
                 ->getData(
-                    function () {return $this->getDataAsXMLInner($this->getRawDataForGoogleShoppingFeed());},
+                    function () {
+                        return $this->getDataAsXMLInner($this->getRawDataForGoogleShoppingFeed());
+                    },
                     $this->getFileName(),
                 );
         }
@@ -156,6 +158,4 @@ class GoogleShoppingFeedController extends DownloadFile
     {
         return false; // set to null to use default
     }
-
-
 }
