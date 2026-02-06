@@ -145,8 +145,7 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
             $where = [$where];
         }
         $where = array_filter($where);
-        $where = array_unique($where);
-        return $where;
+        return array_unique($where);
     }
 
     protected function buildSort(): string
@@ -161,7 +160,7 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
 
     protected function htmlToCleanText(string $s) : string
     {
-        if(! $s ) { 
+        if($s === '' || $s === '0' ) { 
             return '';
         }
         $s = strip_tags($s);

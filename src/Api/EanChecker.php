@@ -22,7 +22,7 @@ class EanChecker
 
     public static function is_valid_ean(string $ean, ?bool $returnAsObject = false): bool|Gtin
     {
-        if (empty($ean)) {
+        if ($ean === '' || $ean === '0') {
             return false;
         }
         try {
@@ -31,7 +31,7 @@ class EanChecker
             return false;
         }
         if ($returnAsObject) {
-            if ($gtin->checkDigit()) {
+            if ($gtin->checkDigit() !== 0) {
                 return $gtin;
             }
             return false;
