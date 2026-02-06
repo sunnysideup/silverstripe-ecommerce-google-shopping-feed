@@ -27,7 +27,7 @@ class GoogleProductCategory extends DataObject
     {
         parent::requireDefaultRecords();
 
-        if (!GoogleProductCategory::get()->exists() && ! empty($_GET['setup-google-categories'])) {
+        if (! GoogleProductCategory::get()->exists() && ! empty($_GET['setup-google-categories'])) {
             DB::alteration_message('Creating categories (this may take 5 - 10 mins)', 'created');
             $default_categories = $this->getGoogleCategories();
             $count = 0;

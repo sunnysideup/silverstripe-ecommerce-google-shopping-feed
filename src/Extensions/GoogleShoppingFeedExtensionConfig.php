@@ -2,17 +2,10 @@
 
 namespace Sunnysideup\EcommerceGoogleShoppingFeed\Extensions;
 
-use DOMDocument;
-use SilverStripe\Core\Injector\Injector;
-use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\CurrencyField;
 use SilverStripe\Forms\FieldList;
-use SilverStripe\Forms\TextField;
 use SilverStripe\ORM\DataExtension;
-use SimpleXMLElement;
-use Sunnysideup\EcommerceGoogleShoppingFeed\Api\ProductCollectionForGoogleShoppingFeed;
 use Sunnysideup\EcommerceGoogleShoppingFeed\Model\GoogleProductCategory;
-use TractorCow\AutoComplete\AutoCompleteField;
 
 /**
  * Class \Sunnysideup\EcommerceGoogleShoppingFeed\Extensions\GoogleShoppingFeedExtension
@@ -45,6 +38,4 @@ class GoogleShoppingFeedExtensionConfig extends DataExtension
             ]
         );
     }
-
-
 }

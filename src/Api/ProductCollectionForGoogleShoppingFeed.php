@@ -4,13 +4,7 @@ namespace Sunnysideup\EcommerceGoogleShoppingFeed\Api;
 
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\Director;
-use SilverStripe\Core\Convert;
-use SilverStripe\ORM\ArrayList;
-use SilverStripe\ORM\DB;
 use SilverStripe\ORM\FieldType\DBField;
-use SilverStripe\Reports\Report;
-use SilverStripe\View\ArrayData;
-use Sunnysideup\Ecommerce\Api\Converters\CsvFunctionality;
 use Sunnysideup\Ecommerce\Api\ProductCollection;
 use Sunnysideup\Ecommerce\Model\Config\EcommerceDBConfig;
 use Sunnysideup\Ecommerce\Model\Money\EcommerceCurrency;
@@ -19,9 +13,10 @@ use Sunnysideup\Ecommerce\Pages\Product;
 class ProductCollectionForGoogleShoppingFeed extends ProductCollection
 {
     protected $defaultImageLink = '';
-    protected $baseURL = '';
-    protected $assetsUrl = '';
 
+    protected $baseURL = '';
+
+    protected $assetsUrl = '';
 
     public function __construct()
     {
@@ -43,7 +38,7 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
             }
             // ensure special chars are converted to HTML entities for XML output
             // do other stuff!
-            if (!empty($productArray)) {
+            if (! empty($productArray)) {
                 $array[] = $productArray;
             }
         }
@@ -79,13 +74,12 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
 
     protected function priceToGooglePrice(float $price)
     {
-        if (!self::$currency) {
+        if (! self::$currency) {
             self::$currency = strtoupper(EcommerceCurrency::default_currency_code());
         }
 
         return number_format($price, 2, '.', '') . ' ' . strtoupper(self::$currency);
     }
-
 
     public function getSQL(?string $where = ''): string
     {
@@ -133,7 +127,7 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
         // min price
         $minPrice = EcommerceDBConfig::current_ecommerce_db_config()->MinimumPriceForGoogleShoppingFeed;
         if ($minPrice) {
-            $array[] = '"Product_Live"."Price" >= ' . $minPrice ;
+            $array[] = '"Product_Live"."Price" >= ' . $minPrice;
         }
 
         return $array;
@@ -158,9 +152,9 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
         return (Director::isDev() ? 'LIMIT 100' : '');
     }
 
-    protected function htmlToCleanText(string $s) : string
+    protected function htmlToCleanText(string $s): string
     {
-        if($s === '' || $s === '0' ) { 
+        if ($s === '' || $s === '0') {
             return '';
         }
         $s = strip_tags($s);

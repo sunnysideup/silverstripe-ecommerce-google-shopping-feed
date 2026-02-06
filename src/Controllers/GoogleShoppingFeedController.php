@@ -16,7 +16,6 @@ use Sunnysideup\EcommerceGoogleShoppingFeed\Api\ProductCollectionForGoogleShoppi
  * <code>
  * http://site.com/shoppingfeed.xml
  * </code>
- *
  */
 class GoogleShoppingFeedController extends DownloadFile
 {
@@ -26,7 +25,6 @@ class GoogleShoppingFeedController extends DownloadFile
     private static $allowed_actions = [
         'index' => true,
     ];
-
 
     private static $dependencies = [
         'dataProviderAPI' => '%$' . ProductCollectionForGoogleShoppingFeed::class,
@@ -84,7 +82,6 @@ class GoogleShoppingFeedController extends DownloadFile
         return $this->dataProviderAPI->getArrayList();
     }
 
-
     protected function getDataAsXMLInner(array $data): string
     {
         $xmlString =
@@ -122,7 +119,6 @@ class GoogleShoppingFeedController extends DownloadFile
      * filters out empty values and adds child nodes to xml
      *
      * @param [type] $item
-     * @return void
      */
     protected function addArrayToXml($item, SimpleXMLElement $xml)
     {
@@ -146,7 +142,6 @@ class GoogleShoppingFeedController extends DownloadFile
 
         return $dom->saveXML();
     }
-
 
     protected function getMaxAgeInMinutes(): ?int
     {
