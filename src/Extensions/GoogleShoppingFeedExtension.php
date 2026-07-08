@@ -2,11 +2,12 @@
 
 namespace Sunnysideup\EcommerceGoogleShoppingFeed\Extensions;
 
+use SilverStripe\Core\Extension;
+use Sunnysideup\Ecommerce\Pages\Product;
 use SilverStripe\Core\Injector\Injector;
 use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\TextField;
-use SilverStripe\ORM\DataExtension;
 use Sunnysideup\EcommerceGoogleShoppingFeed\Api\ProductCollectionForGoogleShoppingFeed;
 use Sunnysideup\EcommerceGoogleShoppingFeed\Model\GoogleProductCategory;
 use TractorCow\AutoComplete\AutoCompleteField;
@@ -14,13 +15,13 @@ use TractorCow\AutoComplete\AutoCompleteField;
 /**
  * Class \Sunnysideup\EcommerceGoogleShoppingFeed\Extensions\GoogleShoppingFeedExtension
  *
- * @property \Sunnysideup\Ecommerce\Pages\Product|\Sunnysideup\EcommerceGoogleShoppingFeed\Extensions\GoogleShoppingFeedExtension $owner
+ * @property Product|GoogleShoppingFeedExtension $owner
  * @property bool $HideFromShoppingFeed
  * @property string $MPN
  * @property int $GoogleProductCategoryID
- * @method \Sunnysideup\EcommerceGoogleShoppingFeed\Model\GoogleProductCategory GoogleProductCategory()
+ * @method GoogleProductCategory GoogleProductCategory()
  */
-class GoogleShoppingFeedExtension extends DataExtension
+class GoogleShoppingFeedExtension extends Extension
 {
     /**
      * @var array
@@ -64,7 +65,7 @@ class GoogleShoppingFeedExtension extends DataExtension
         $obj = Injector::inst()->get(ProductCollectionForGoogleShoppingFeed::class);
         return array_pop(
             $obj->oneProductRaw2Array(
-                $obj->getArrayFull('"InternalItemID" = \'' . $this->getOwner()->InternalItemID . '\'')
+                $obj->getArrayFull('"InternalItemID" = \'' . $this->getOwner()->InternalItemID . "'")
             )
         );
     }

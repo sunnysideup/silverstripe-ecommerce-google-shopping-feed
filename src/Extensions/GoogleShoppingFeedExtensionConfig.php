@@ -1,22 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sunnysideup\EcommerceGoogleShoppingFeed\Extensions;
 
+use SilverStripe\Core\Extension;
+use Sunnysideup\Ecommerce\Pages\Product;
 use SilverStripe\Forms\CurrencyField;
 use SilverStripe\Forms\FieldList;
-use SilverStripe\ORM\DataExtension;
 use Sunnysideup\EcommerceGoogleShoppingFeed\Model\GoogleProductCategory;
 
 /**
  * Class \Sunnysideup\EcommerceGoogleShoppingFeed\Extensions\GoogleShoppingFeedExtension
  *
- * @property \Sunnysideup\Ecommerce\Pages\Product|\Sunnysideup\EcommerceGoogleShoppingFeed\Extensions\GoogleShoppingFeedExtension $owner
+ * @property Product|GoogleShoppingFeedExtension $owner
  * @property bool $HideFromShoppingFeed
  * @property string $MPN
  * @property int $GoogleProductCategoryID
- * @method \Sunnysideup\EcommerceGoogleShoppingFeed\Model\GoogleProductCategory GoogleProductCategory()
+ * @method GoogleProductCategory GoogleProductCategory()
  */
-class GoogleShoppingFeedExtensionConfig extends DataExtension
+class GoogleShoppingFeedExtensionConfig extends Extension
 {
     /**
      * @var array

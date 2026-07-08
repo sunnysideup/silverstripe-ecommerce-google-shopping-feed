@@ -13,17 +13,21 @@ class EanChecker
         if ($ean === '' || $ean === '0') {
             return false;
         }
+
         try {
             $gtin = Factory::create($ean);
-        } catch (NonNormalizable $e) {
+        } catch (NonNormalizable) {
             return false;
         }
+
         if ($returnAsObject) {
             if ($gtin->checkDigit() !== 0) {
                 return $gtin;
             }
+
             return false;
         }
+
         return $gtin->checkDigit();
     }
 
@@ -33,6 +37,7 @@ class EanChecker
         if ($gtin) {
             return $gtin->padded();
         }
+
         return '';
     }
 }

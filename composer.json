@@ -1,38 +1,38 @@
 {
-  "name": "sunnysideup/ecommerce-google-shopping-feed",
-  "type": "silverstripe-vendormodule",
-  "description": "add google shopping feed to your e-commerce install",
-  "keywords": [
-    "Silverstripe-CMS",
-    "CMS",
-    "Silverstripe",
-    "ecommerce",
-    "e-commerce",
-    "google",
-    "shopping feed",
-    "xml",
-    "shop",
-    "feed"
-  ],
-  "license": "BSD-3-Clause",
-  "authors": [
-    {
-      "name": "Shane Watters",
-      "email": "shane@sunnysideup.co.nz",
-      "role": "lead developer"
+    "name": "sunnysideup/ecommerce-google-shopping-feed",
+    "type": "silverstripe-vendormodule",
+    "description": "add google shopping feed to your e-commerce install",
+    "keywords": [
+        "Silverstripe-CMS",
+        "CMS",
+        "Silverstripe",
+        "ecommerce",
+        "e-commerce",
+        "google",
+        "shopping feed",
+        "xml",
+        "shop",
+        "feed"
+    ],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Shane Watters",
+            "email": "shane@sunnysideup.co.nz",
+            "role": "lead developer"
+        }
+    ],
+    "require": {
+        "sunnysideup/ecommerce": "^33.0",
+        "sunnysideup/download": "dev-main",
+        "tractorcow/silverstripe-autocomplete": "dev-master",
+        "silverstripe/recipe-cms": "^6.0",
+        "real-digital/gtin-validator": "^1.3"
+    },
+    "extra": [],
+    "autoload": {
+        "psr-4": {
+            "Sunnysideup\\EcommerceGoogleShoppingFeed\\": "src/"
+        }
     }
-  ],
-  "require": {
-    "sunnysideup/ecommerce": "5.x-dev",
-    "sunnysideup/download": "5.x-dev",
-    "tractorcow/silverstripe-autocomplete": "^5.0",
-    "silverstripe/recipe-cms": "^5.0",
-    "real-digital/gtin-validator": "^1.3"
-  },
-  "extra": [],
-  "autoload": {
-    "psr-4": {
-      "Sunnysideup\\EcommerceGoogleShoppingFeed\\": "src/"
-    }
-  }
 }

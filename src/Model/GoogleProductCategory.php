@@ -2,6 +2,7 @@
 
 namespace Sunnysideup\EcommerceGoogleShoppingFeed\Model;
 
+use Override;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\DB;
 
@@ -23,6 +24,7 @@ class GoogleProductCategory extends DataObject
     /**
      * Build the initial list of Categories.
      */
+    #[Override]
     public function RequireDefaultRecords()
     {
         parent::requireDefaultRecords();
@@ -40,7 +42,8 @@ class GoogleProductCategory extends DataObject
                 $new_cat->write();
                 ++$count;
             }
-            DB::alteration_message("Created {$count} Categories", 'created');
+
+            DB::alteration_message(sprintf('Created %d Categories', $count), 'created');
         }
     }
 
@@ -56,7 +59,7 @@ class GoogleProductCategory extends DataObject
     {
         // Get a list of Google Categories from the
         // product file.
-        $file = dirname(__FILE__) . '/../../thirdparty/google_product_taxonomy.txt';
+        $file = __DIR__ . '/../../thirdparty/google_product_taxonomy.txt';
         $fopen = fopen($file, 'r');
         $fread = fread($fopen, filesize($file));
         fclose($fopen);
@@ -72,6 +75,7 @@ class GoogleProductCategory extends DataObject
         return $result;
     }
 
+    #[Override]
     public function canDelete($member = null)
     {
         return false;
