@@ -22,7 +22,7 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
     {
         $this->defaultImageLink = EcommerceDBConfig::current_ecommerce_db_config()->DefaultProductImage()->Link();
         $this->baseURL = Director::absoluteBaseURL();
-        $this->assetsUrl = Director::baseURL() . 'assets/';
+        $this->assetsUrl = Controller::join_links($this->baseURL, ASSETS_DIR);
     }
 
     public function getArrayFull(string|array|null $where = ''): array
