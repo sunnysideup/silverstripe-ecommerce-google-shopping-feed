@@ -4,6 +4,7 @@ namespace Sunnysideup\EcommerceGoogleShoppingFeed\Controllers;
 
 use DOMDocument;
 use SilverStripe\Control\Director;
+use SilverStripe\Core\Config\Config;
 use SilverStripe\SiteConfig\SiteConfig;
 use SimpleXMLElement;
 use Sunnysideup\Download\Control\DownloadFile;
@@ -19,6 +20,14 @@ use Sunnysideup\EcommerceGoogleShoppingFeed\Api\ProductCollectionForGoogleShoppi
  */
 class GoogleShoppingFeedController extends DownloadFile
 {
+    public const KEY_SUFFIX_DELIMITER_FOR_XML = '___';
+    
+    public const FILE_GET_VAR_GLUE = '---';
+
+    public const FILE_GET_VAR_GLUE_INNER = '___';
+
+    private static $url_segment = 'shoppingfeed';
+
     /**
      * @var array
      */
@@ -30,11 +39,18 @@ class GoogleShoppingFeedController extends DownloadFile
         'dataProviderAPI' => '%$' . ProductCollectionForGoogleShoppingFeed::class,
     ];
 
+    // Send every URL variation to index() so 'parentid-123' is never
+    // treated as an action name (which would 404).
+    private static $url_handlers = [
+        ''         => 'index',
+        '$segment' => 'index',
+    ];
+
     protected $useTemplate = false;
 
     protected function getFileName(): string
     {
-        return 'shoppingfeed' . $this->getGetVarAsString() . '.xml';
+        return static::get_link($this->getGetVars());
     }
 
     protected function getContentType(): string
@@ -77,9 +93,18 @@ class GoogleShoppingFeedController extends DownloadFile
         }
     }
 
+    private function getDataProviderAPI(): ProductCollectionForGoogleShoppingFeed
+    {
+        $filter = $this->getGetVars();
+        if (!empty($filter)) {
+            $this->dataProviderAPI->setAdditionalPredeterminedFilters($filter);
+        }
+        return $this->dataProviderAPI;
+    }
+
     public function Items()
     {
-        return $this->dataProviderAPI->getArrayList();
+        return $this->getDataProviderAPI()->getArrayList();
     }
 
     protected function getDataAsXMLInner(array $data): string
@@ -110,25 +135,25 @@ class GoogleShoppingFeedController extends DownloadFile
     public function getRawDataForGoogleShoppingFeed(): array
     {
         if ($this->rawDataForGoogleShoppingFeed === null) {
-            $this->rawDataForGoogleShoppingFeed = $this->dataProviderAPI->getArrayFull(null);
+            $this->rawDataForGoogleShoppingFeed = $this->getDataProviderAPI()->getArrayFull(null);
         }
         return $this->rawDataForGoogleShoppingFeed;
     }
 
-    /**
-     * filters out empty values and adds child nodes to xml
-     *
-     * @param [type] $item
-     */
-    protected function addArrayToXml($item, SimpleXMLElement $xml)
+    protected function addArrayToXml(array $data, SimpleXMLElement $item): void
     {
-        foreach ($item as $key => $value) {
-            // Add child with namespace
+        foreach ($data as $key => $value) {
+            // additional_image_link___2  =>  additional_image_link
+            $delimPos    = strpos((string) $key, self::KEY_SUFFIX_DELIMITER_FOR_XML);
+            $elementName = $delimPos === false
+                ? (string) $key
+                : substr((string) $key, 0, $delimPos);
+
             if (is_array($value)) {
-                $subnode = $xml->addChild($key, null, 'http://base.google.com/ns/1.0');
-                $this->addArrayToXml($value, $subnode);
-            } elseif ($value) {
-                $xml->addChild($key, htmlspecialchars((string) $value), 'http://base.google.com/ns/1.0');
+                $child = $item->addChild($elementName);
+                $this->addArrayToXml($value, $child);
+            } else {
+                $item->addChild($elementName, htmlspecialchars((string) $value));
             }
         }
     }
@@ -153,30 +178,50 @@ class GoogleShoppingFeedController extends DownloadFile
         return false; // set to null to use default
     }
 
-    protected function getGetVars(): array
+    protected function getGetVars(?array $vars = null): array
     {
-        $array =  $this->getRequest()?->getVars();
-        if (is_array($array) && !empty($array)) {
-            foreach ($array as $key => $value) {
+        $vars = $vars ? $vars : $this->getVarsFromSegment($this->getRequest()->param('segment'));
+        if (is_array($vars) && !empty($vars)) {
+            foreach ($vars as $key => $value) {
                 if ($key !== 'parentid' && $key !== 'internalitemids') {
-                    unset($array[$key]);
+                    unset($vars[$key]);
                 }
             }
+            return $vars;
         }
-
         return [];
     }
 
-    protected function getGetVarAsString(): string
+    protected function getVarsFromSegment(?string $segment): array
     {
-        $vars = $this->getGetVars();
-        if ($vars) {
-            $string = http_build_query($vars);              // "foo=bar&baz=qux"
+        if (! $segment) {
+            return [];
+        }
+        $parts = explode(static::FILE_GET_VAR_GLUE, $segment);
+        $result = [];
+        foreach ($parts as $part) {
+            $innerParts = explode(static::FILE_GET_VAR_GLUE_INNER, $part);
+            if (count($innerParts) === 2) {
+                $result[$innerParts[0]] = $innerParts[1];
+            }
+        }
+        return $result;
+    }
 
-            // Replace anything that isn't a safe filename char with an underscore
-            $safe = preg_replace('/[^A-Za-z0-9._-]+/', '_', $string);
-            $safe = trim($safe, '_');                        // no leading/trailing underscores
-            return $safe;
+    public static function get_link(array $vars): string
+    {
+        return Config::inst()->get(static::class, 'url_segment') . (self::get_params_as_string_for_file_name($vars)) . '.xml';
+    }
+
+    protected static function get_params_as_string_for_file_name(array $vars): string
+    {
+        if (!empty($vars)) {
+            $stringArray = [];
+            foreach ($vars as $key => $value) {
+                $stringArray[] = $key .static::FILE_GET_VAR_GLUE_INNER. preg_replace('/[^A-Za-z0-9._-]+/', '', $value);
+            }
+            $safe = implode(static::FILE_GET_VAR_GLUE, $stringArray);
+            return '/' . $safe;
         }
         return '';
     }

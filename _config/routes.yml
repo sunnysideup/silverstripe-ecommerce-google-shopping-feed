@@ -3,4 +3,4 @@ Name: googleshoppingfeedroutes
 ---
 SilverStripe\Control\Director:
   rules:
-    shoppingfeed.xml: Sunnysideup\EcommerceGoogleShoppingFeed\Controllers\GoogleShoppingFeedController
+    'shoppingfeed//$segment': Sunnysideup\EcommerceGoogleShoppingFeed\Controllers\GoogleShoppingFeedController

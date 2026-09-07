@@ -116,16 +116,12 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
     protected function buildWhere(array|string|null $where = ''): string
     {
         $array = $this->standardiseToArray($where);
-        $getWhere = $this->getGetVarWhere();
-        if ($getWhere) {
-            $array[] = $getWhere;
-        }
         return ' ( ' . implode(' ) AND ( ', $array) . ')';
     }
 
     protected function getWhereArrayForSql(array|string|null $where = ''): array
     {
-        $array = $this->standardiseToArray($where);
+        $array = parent::getWhereArrayForSql($where);
         $array[] = '"Product_Live"."HideFromShoppingFeed" <> 1';
         $array[] = '"Product_Live"."AllowPurchase" <> 0';
         // min price
@@ -137,14 +133,6 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
         return $array;
     }
 
-    private function standardiseToArray(array|string|null $where = ''): array
-    {
-        if (! is_array($where)) {
-            $where = [$where];
-        }
-        $where = array_filter($where);
-        return array_unique($where);
-    }
 
     protected function buildSort(): string
     {
