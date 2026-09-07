@@ -34,7 +34,7 @@ class GoogleShoppingFeedController extends DownloadFile
 
     protected function getFileName(): string
     {
-        return 'shoppingfeed.xml';
+        return 'shoppingfeed' . $this->getGetVarAsString() . '.xml';
     }
 
     protected function getContentType(): string
@@ -152,4 +152,33 @@ class GoogleShoppingFeedController extends DownloadFile
     {
         return false; // set to null to use default
     }
+
+    protected function getGetVars(): array
+    {
+        $array =  $this->getRequest()?->getVars();
+        if (is_array($array) && !empty($array)) {
+            foreach ($array as $key => $value) {
+                if ($key !== 'parentid' && $key !== 'internalitemids') {
+                    unset($array[$key]);
+                }
+            }
+        }
+
+        return [];
+    }
+
+    protected function getGetVarAsString(): string
+    {
+        $vars = $this->getGetVars();
+        if ($vars) {
+            $string = http_build_query($vars);              // "foo=bar&baz=qux"
+
+            // Replace anything that isn't a safe filename char with an underscore
+            $safe = preg_replace('/[^A-Za-z0-9._-]+/', '_', $string);
+            $safe = trim($safe, '_');                        // no leading/trailing underscores
+            return $safe;
+        }
+        return '';
+    }
+
 }
