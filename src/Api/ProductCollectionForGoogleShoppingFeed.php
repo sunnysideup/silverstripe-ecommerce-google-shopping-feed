@@ -116,6 +116,10 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
     protected function buildWhere(array|string|null $where = ''): string
     {
         $array = $this->standardiseToArray($where);
+        $getWhere = $this->getGetVarWhere();
+        if ($getWhere) {
+            $array[] = $getWhere;
+        }
         return ' ( ' . implode(' ) AND ( ', $array) . ')';
     }
 
