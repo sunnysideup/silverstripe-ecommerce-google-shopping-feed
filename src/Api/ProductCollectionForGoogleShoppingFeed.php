@@ -133,7 +133,7 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
         return $array;
     }
 
-    private function standardiseToArray(array|string|null $where = ''): array
+    protected function standardiseToArray(array|string|null $where = ''): array
     {
         if (! is_array($where)) {
             $where = [$where];
