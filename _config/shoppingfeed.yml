@@ -7,6 +7,10 @@ Sunnysideup\Ecommerce\Pages\Product:
   extensions:
     - Sunnysideup\EcommerceGoogleShoppingFeed\Extensions\GoogleShoppingFeedExtension
 
+Sunnysideup\Ecommerce\Pages\ProductGroup:
+  extensions:
+    - Sunnysideup\EcommerceGoogleShoppingFeed\Extensions\GoogleShoppingFeedProductGroupExtension
+
 Sunnysideup\Ecommerce\Model\Config\EcommerceDBConfig:
   extensions:
     - Sunnysideup\EcommerceGoogleShoppingFeed\Extensions\GoogleShoppingFeedExtensionConfig
