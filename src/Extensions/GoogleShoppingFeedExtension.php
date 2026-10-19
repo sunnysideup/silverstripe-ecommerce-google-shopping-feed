@@ -16,6 +16,7 @@ use TractorCow\AutoComplete\AutoCompleteField;
  *
  * @property \Sunnysideup\Ecommerce\Pages\Product|\Sunnysideup\EcommerceGoogleShoppingFeed\Extensions\GoogleShoppingFeedExtension $owner
  * @property bool $HideFromShoppingFeed
+ * @property bool $UseGoogleProductCategoryOverride
  * @property string $MPN
  * @property int $GoogleProductCategoryID
  * @method \Sunnysideup\EcommerceGoogleShoppingFeed\Model\GoogleProductCategory GoogleProductCategory()
@@ -27,6 +28,7 @@ class GoogleShoppingFeedExtension extends DataExtension
      */
     private static $db = [
         'HideFromShoppingFeed' => 'Boolean',
+        'UseGoogleProductCategoryOverride' => 'Boolean',
         'MPN' => 'Varchar(255)',
     ];
 
@@ -47,6 +49,10 @@ class GoogleShoppingFeedExtension extends DataExtension
             'Root.GoogleFeed',
             [
                 CheckboxField::create('HideFromShoppingFeed'),
+                CheckboxField::create(
+                    'UseGoogleProductCategoryOverride',
+                    'Use product Google category instead of group category'
+                )->setDescription('Only when checked will this product\'s Google product category override the group category in the shopping feed.'),
                 TextField::create('MPN', 'MPN / SKU'),
                 AutoCompleteField::create(
                     'GoogleProductCategoryID',
