@@ -5,16 +5,11 @@ namespace Sunnysideup\EcommerceGoogleShoppingFeed\Extensions;
 use SilverStripe\Forms\CurrencyField;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\ORM\DataExtension;
-use Sunnysideup\EcommerceGoogleShoppingFeed\Model\GoogleProductCategory;
 
 /**
  * Class \Sunnysideup\EcommerceGoogleShoppingFeed\Extensions\GoogleShoppingFeedExtension
  *
- * @property \Sunnysideup\Ecommerce\Pages\Product|\Sunnysideup\EcommerceGoogleShoppingFeed\Extensions\GoogleShoppingFeedExtension $owner
- * @property bool $HideFromShoppingFeed
- * @property string $MPN
- * @property int $GoogleProductCategoryID
- * @method \Sunnysideup\EcommerceGoogleShoppingFeed\Model\GoogleProductCategory GoogleProductCategory()
+ * @property \Sunnysideup\Ecommerce\Model\Config\EcommerceDBConfig|\Sunnysideup\EcommerceGoogleShoppingFeed\Extensions\GoogleShoppingFeedExtensionConfig $owner
  */
 class GoogleShoppingFeedExtensionConfig extends DataExtension
 {
