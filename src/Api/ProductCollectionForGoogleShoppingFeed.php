@@ -151,16 +151,4 @@ class ProductCollectionForGoogleShoppingFeed extends ProductCollection
     {
         return (Director::isDev() ? 'LIMIT 100' : '');
     }
-
-    protected function htmlToCleanText(string $s): string
-    {
-        if ($s === '' || $s === '0') {
-            return '';
-        }
-        $s = strip_tags($s);
-        $s = DBField::create_field('Varchar', $s)->LimitCharactersToClosestWord(300, true);
-        $s = preg_replace('/[^a-zA-Z0-9\s]/', ' ', $s);
-        $s = preg_replace('/\s+/', ' ', $s);
-        return trim($s);
-    }
 }
