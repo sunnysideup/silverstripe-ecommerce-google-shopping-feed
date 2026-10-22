@@ -21,7 +21,11 @@ use Sunnysideup\EcommerceGoogleShoppingFeed\Api\ProductCollectionForGoogleShoppi
 class GoogleShoppingFeedController extends DownloadFile
 {
     public const KEY_SUFFIX_DELIMITER_FOR_XML = '___';
-    
+
+    public const GOOGLE_NAMESPACE = 'http://base.google.com/ns/1.0';
+
+    public const RSS_ELEMENTS_WITHOUT_G_PREFIX = ['title', 'description', 'link'];
+
     public const FILE_GET_VAR_GLUE = '---';
 
     public const FILE_GET_VAR_GLUE_INNER = '___';
@@ -70,7 +74,7 @@ class GoogleShoppingFeedController extends DownloadFile
 
     protected function getSchema(): string
     {
-        return '<rss xmlns:g="http://base.google.com/ns/1.0" version="3.0">';
+        return '<rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">';
     }
 
     public function SiteConfig()
@@ -149,11 +153,16 @@ class GoogleShoppingFeedController extends DownloadFile
                 ? (string) $key
                 : substr((string) $key, 0, $delimPos);
 
+            // standard RSS elements stay un-prefixed, everything else is g:
+            $useGoogleNs = !in_array($elementName, self::RSS_ELEMENTS_WITHOUT_G_PREFIX, true);
+            $qualifiedName = $useGoogleNs ? 'g:' . $elementName : $elementName;
+            $ns = $useGoogleNs ? self::GOOGLE_NAMESPACE : null;
+
             if (is_array($value)) {
-                $child = $item->addChild($elementName);
+                $child = $item->addChild($qualifiedName, null, $ns);
                 $this->addArrayToXml($value, $child);
             } else {
-                $item->addChild($elementName, htmlspecialchars((string) $value));
+                $item->addChild($qualifiedName, htmlspecialchars((string) $value), $ns);
             }
         }
     }
