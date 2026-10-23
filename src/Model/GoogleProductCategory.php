@@ -42,15 +42,15 @@ class GoogleProductCategory extends DataObject
         if ($listCount !== $dataObjectCount) {
             DB::alteration_message('Creating categories (this may take 5 - 10 mins)', 'created');
             DB::query('TRUNCATE TABLE "GoogleProductCategory"');
-            $default_categories = $this->getGoogleCategories();
             $count = 0;
-            foreach ($default_categories as $key => $value) {
-                $new_cat = GoogleProductCategory::create([
+            foreach ($list as $key => $value) {
+                DB::alteration_message('Creating category ' . $value, 'created');
+                $newCat = GoogleProductCategory::create([
                     'GoogleID' => $key,
                     'Title' => $value,
                 ]);
 
-                $new_cat->write();
+                $newCat->write();
                 ++$count;
             }
             DB::alteration_message("Created {$count} Categories", 'created');
@@ -75,18 +75,12 @@ class GoogleProductCategory extends DataObject
         fclose($fopen);
         $result = [];
 
-        foreach (explode("\n", $fread) as $string) {
-            if (stripos($string, ' - ') === false) {
-                continue;
-            }
-            if (stripos($string, '#') < 10) {
-                continue;
-            }
-            $exploded = explode(' - ', $string);
-            if ($string && 2 === count($exploded)) {
-                $result[$exploded[0]] = $exploded[1];
-            }
-        }
+        preg_match_all('/^(\d+)\s+-\s+([^\r\n]+)/m', $fread, $matches);
+        $result = array_combine($matches[1], $matches[2]);
+
+        echo '-------------';
+        print_r($result);
+        echo '-------------';
 
         return $result;
     }
