@@ -19,6 +19,16 @@ class GoogleProductCategory extends DataObject
         'GoogleID' => 'Int',
         'Title' => 'Varchar(255)',
     ];
+    private static $summary_fields = [
+        'GoogleID' => 'Google ID',
+        'Title' => 'Title',
+    ];
+    private static $indexes = [
+        'GoogleID' => [
+            'type' => 'unique',
+            'columns' => ['GoogleID'],
+        ]
+    ];
 
     /**
      * Build the initial list of Categories.
