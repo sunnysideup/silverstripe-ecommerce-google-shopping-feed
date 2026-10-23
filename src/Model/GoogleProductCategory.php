@@ -107,15 +107,25 @@ class GoogleProductCategory extends DataObject
     #[Override]
     public function onBeforeWrite()
     {
+        $this->fixID();
         parent::onBeforeWrite();
-        $tableName = $this->config()->get('table_name');
-        DB::query('UPDATE "' . $tableName . '" SET "ID" = '.$this->GoogleID);
+        $this->fixID();
+
     }
     #[Override]
     public function onAfterWrite()
     {
-        return parent::onAfterWrite();
-        $tableName = $this->config()->get('table_name');
-        DB::query('UPDATE "' . $tableName . '" SET "ID" = '.$this->GoogleID);
+        $this->fixID();
+        parent::onAfterWrite();
+        $this->fixID();
+    }
+
+    protected function fixID()
+    {
+        if ($this->GoogleID) {
+            $tableName = $this->config()->get('table_name');
+            $this->ID = $this->GoogleID;
+            DB::query('UPDATE "' . $tableName . '" SET "ID" = '.$this->GoogleID. ' WHERE "GoogleID" = '.$this->GoogleID);
+        }
     }
 }
