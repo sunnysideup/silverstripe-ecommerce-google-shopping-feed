@@ -29,6 +29,7 @@ class GoogleProductCategory extends DataObject
 
         if (! GoogleProductCategory::get()->exists() && ! empty($_GET['setup-google-categories'])) {
             DB::alteration_message('Creating categories (this may take 5 - 10 mins)', 'created');
+            DB::query('TRUNCATE TABLE "GoogleProductCategory"');
             $default_categories = $this->getGoogleCategories();
             $count = 0;
             foreach ($default_categories as $key => $value) {
