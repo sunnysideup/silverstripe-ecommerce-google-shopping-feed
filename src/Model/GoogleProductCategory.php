@@ -2,6 +2,7 @@
 
 namespace Sunnysideup\EcommerceGoogleShoppingFeed\Model;
 
+use Override;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\DB;
 
@@ -41,7 +42,8 @@ class GoogleProductCategory extends DataObject
         $list = $this->getGoogleCategories();
         $listCount = count($list);
         $dataObjectCount = GoogleProductCategory::get()->count();
-        if ($listCount !== $dataObjectCount) {
+        $test2 = DB::query('SELECT COUNT(*) FROM "GoogleProductCategory" WHERE GoogleID <> ID')->value();
+        if ($listCount !== $dataObjectCount || $test2 > 0) {
             DB::alteration_message('Creating categories (this may take 5 - 10 mins)', 'created');
             DB::query('TRUNCATE TABLE "GoogleProductCategory"');
             $count = 0;
@@ -100,5 +102,20 @@ class GoogleProductCategory extends DataObject
     public function canEdit($member = null)
     {
         return false;
+    }
+
+    #[Override]
+    public function onBeforeWrite()
+    {
+        parent::onBeforeWrite();
+        $tableName = $this->config()->get('table_name');
+        DB::query('UPDATE "' . $tableName . '" SET "ID" = '.$this->GoogleID);
+    }
+    #[Override]
+    public function onAfterWrite()
+    {
+        return parent::onAfterWrite();
+        $tableName = $this->config()->get('table_name');
+        DB::query('UPDATE "' . $tableName . '" SET "ID" = '.$this->GoogleID);
     }
 }
