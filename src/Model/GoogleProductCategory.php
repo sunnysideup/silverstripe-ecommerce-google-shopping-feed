@@ -15,6 +15,8 @@ class GoogleProductCategory extends DataObject
 {
     private static $table_name = 'GoogleProductCategory';
 
+    private static $relative_path_to_google_categories_file = '/../../thirdparty/google_product_taxonomy.txt';
+
     private static $db = [
         'GoogleID' => 'Int',
         'Title' => 'Varchar(255)',
@@ -69,7 +71,7 @@ class GoogleProductCategory extends DataObject
     {
         // Get a list of Google Categories from the
         // product file.
-        $file = dirname(__FILE__) . '/../../thirdparty/google_product_taxonomy.txt';
+        $file = dirname(__FILE__) . $this->config()->get('relative_path_to_google_categories_file');
         $fopen = fopen($file, 'r');
         $fread = fread($fopen, filesize($file));
         fclose($fopen);
