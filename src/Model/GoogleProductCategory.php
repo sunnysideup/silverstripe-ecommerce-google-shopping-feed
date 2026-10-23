@@ -26,8 +26,10 @@ class GoogleProductCategory extends DataObject
     public function RequireDefaultRecords()
     {
         parent::requireDefaultRecords();
-
-        if (! GoogleProductCategory::get()->exists() && ! empty($_GET['setup-google-categories'])) {
+        $list = $this->getGoogleCategories();
+        $listCount = count($list);
+        $dataObjectCount = GoogleProductCategory::get()->count();
+        if ($listCount !== $dataObjectCount) {
             DB::alteration_message('Creating categories (this may take 5 - 10 mins)', 'created');
             DB::query('TRUNCATE TABLE "GoogleProductCategory"');
             $default_categories = $this->getGoogleCategories();
@@ -64,6 +66,12 @@ class GoogleProductCategory extends DataObject
         $result = [];
 
         foreach (explode("\n", $fread) as $string) {
+            if (stripos($string, ' - ') === false) {
+                continue;
+            }
+            if (stripos($string, '#') < 10) {
+                continue;
+            }
             $exploded = explode(' - ', $string);
             if ($string && 2 === count($exploded)) {
                 $result[$exploded[0]] = $exploded[1];
