@@ -85,4 +85,14 @@ class GoogleProductCategory extends DataObject
     {
         return false;
     }
+
+    public function canCreate($member = null, $context = [])
+    {
+        return false;
+    }
+
+    public function canEdit($member = null)
+    {
+        return false;
+    }
 }
