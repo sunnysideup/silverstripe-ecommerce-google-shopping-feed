@@ -14,3 +14,9 @@ Sunnysideup\Ecommerce\Pages\ProductGroup:
 Sunnysideup\Ecommerce\Model\Config\EcommerceDBConfig:
   extensions:
     - Sunnysideup\EcommerceGoogleShoppingFeed\Extensions\GoogleShoppingFeedExtensionConfig
+
+SilverStripe\Core\Injector\Injector:
+  Psr\SimpleCache\CacheInterface.shoppingFeedThrottle:
+    factory: SilverStripe\Core\Cache\CacheFactory
+    constructor:
+      namespace: 'shoppingFeedThrottle'

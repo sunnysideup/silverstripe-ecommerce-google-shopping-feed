@@ -3,10 +3,14 @@
 namespace Sunnysideup\EcommerceGoogleShoppingFeed\Controllers;
 
 use DOMDocument;
+use Psr\SimpleCache\CacheInterface;
 use SilverStripe\Control\Director;
 use SilverStripe\Core\Config\Config;
+use SilverStripe\Core\Injector\Injector;
 use SilverStripe\SiteConfig\SiteConfig;
 use SimpleXMLElement;
+use Sunnysideup\Ecommerce\Model\Address\EcommerceCountry;
+use Sunnysideup\Ecommerce\Pages\ProductGroup;
 use Sunnysideup\Download\Control\DownloadFile;
 use Sunnysideup\Download\Model\CachedDownload;
 use Sunnysideup\EcommerceGoogleShoppingFeed\Api\ProductCollectionForGoogleShoppingFeed;
@@ -30,7 +34,31 @@ class GoogleShoppingFeedController extends DownloadFile
 
     public const FILE_GET_VAR_GLUE_INNER = '___';
 
+    /**
+     * the longest segment we accept, e.g. parentid___123
+     */
+    public const MAX_SEGMENT_LENGTH = 100;
+
+    /**
+     * the only filters we accept in the segment
+     */
+    public const ALLOWED_FILTER_KEYS = ['parentid', 'internalitemids'];
+
+    public const MAX_INTERNAL_ITEM_IDS = 20;
+
     private static $url_segment = 'shoppingfeed';
+
+    /**
+     * how many new feed files / records one IP address can trigger per window
+     */
+    private static $new_file_limit = 10;
+
+    private static $new_file_window_in_seconds = 600;
+
+    /**
+     * how long a successful feed can be cached by browsers / CDNs.
+     */
+    private static $cache_max_age_in_seconds = 300;
 
     /**
      * @var array
@@ -52,9 +80,97 @@ class GoogleShoppingFeedController extends DownloadFile
 
     protected $useTemplate = false;
 
+    /**
+     * Rejects invalid segments before any record or file is created.
+     */
+    public function index()
+    {
+        $segment = $this->getRequest()->param('segment');
+        if (null !== $segment && '' !== $segment && ! $this->isValidSegment((string) $segment)) {
+            return $this->httpError(404, 'Not found');
+        }
+
+        return parent::index();
+    }
+
+    protected function getCacheMaxAgeInSeconds(): int
+    {
+        return (int) $this->config()->get('cache_max_age_in_seconds');
+    }
+
+    protected function isValidSegment(string $segment): bool
+    {
+        if (strlen($segment) > self::MAX_SEGMENT_LENGTH || ! preg_match('/^[A-Za-z0-9._-]+$/', $segment)) {
+            return false;
+        }
+        $parts = explode(static::FILE_GET_VAR_GLUE, $segment);
+        foreach ($parts as $part) {
+            $innerParts = explode(static::FILE_GET_VAR_GLUE_INNER, $part);
+            if (count($innerParts) !== 2) {
+                return false;
+            }
+            [$key, $value] = $innerParts;
+            if (! in_array($key, self::ALLOWED_FILTER_KEYS, true) || '' === $value) {
+                return false;
+            }
+            if ('parentid' === $key) {
+                if (! ctype_digit($value) || strlen($value) > 9 || (int) $value < 1) {
+                    return false;
+                }
+                // never fall back to the full feed for an unknown group
+                if (! ProductGroup::get()->byID((int) $value)) {
+                    return false;
+                }
+            } else {
+                $ids = explode('.', $value);
+                if (count($ids) > self::MAX_INTERNAL_ITEM_IDS) {
+                    return false;
+                }
+                foreach ($ids as $id) {
+                    if (! preg_match('/^[A-Za-z0-9_-]{1,50}$/', $id)) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
     protected function getFileName(): string
     {
         return static::get_link($this->getGetVars());
+    }
+
+    /**
+     * Generating a new file is expensive and can not be absorbed by a CDN, so we limit
+     * how often one IP address can trigger it.
+     */
+    protected function throttleNewFiles(string $fileName): void
+    {
+        $limit = (int) $this->config()->get('new_file_limit');
+        if ($limit <= 0) {
+            return;
+        }
+        $exists = CachedDownload::get()->filter(['MyLink' => $fileName])->exists()
+            && file_exists(CachedDownload::file_path($fileName));
+        if ($exists) {
+            return;
+        }
+        $window = max(1, (int) $this->config()->get('new_file_window_in_seconds'));
+        $ip = EcommerceCountry::get_ip();
+        $cache = Injector::inst()->get(CacheInterface::class . '.shoppingFeedThrottle');
+        $key = 'shoppingfeednew' . md5($ip);
+        $entry = $cache->get($key);
+        $now = time();
+        if (! is_array($entry) || ($entry['start'] ?? 0) + $window <= $now) {
+            $entry = ['start' => $now, 'count' => 0];
+        }
+        if ($entry['count'] >= $limit) {
+            $this->httpError(429, 'Too many requests');
+        }
+        ++$entry['count'];
+        $cache->set($key, $entry, max(1, $entry['start'] + $window - $now));
     }
 
     protected function getContentType(): string
@@ -87,7 +203,10 @@ class GoogleShoppingFeedController extends DownloadFile
         if ($this->useTemplate) {
             return parent::getFileData();
         } else {
-            return CachedDownload::inst($this->getFilename(), $this->getTitle())
+            $fileName = $this->getFileName();
+            $this->throttleNewFiles($fileName);
+
+            return CachedDownload::inst($fileName, $this->getTitle())
                 ->getData(
                     function () {
                         return $this->getDataAsXMLInner($this->getRawDataForGoogleShoppingFeed());
@@ -189,11 +308,18 @@ class GoogleShoppingFeedController extends DownloadFile
 
     protected function getGetVars(?array $vars = null): array
     {
-        $vars = $vars ? $vars : $this->getVarsFromSegment($this->getRequest()->param('segment'));
+        $segment = (string) $this->getRequest()->param('segment');
+        if (strlen($segment) > self::MAX_SEGMENT_LENGTH) {
+            return [];
+        }
+        $vars = $vars ? $vars : $this->getVarsFromSegment($segment);
         if (is_array($vars) && !empty($vars)) {
             foreach ($vars as $key => $value) {
-                if ($key !== 'parentid' && $key !== 'internalitemids') {
+                if (! in_array($key, self::ALLOWED_FILTER_KEYS, true) || ! is_string($value)) {
                     unset($vars[$key]);
+                } elseif ('parentid' === $key) {
+                    // normalise, so parentid___012 and parentid___12 share one record
+                    $vars[$key] = (string) (int) $value;
                 }
             }
             return $vars;
